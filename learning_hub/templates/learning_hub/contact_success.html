@@ -1,0 +1,37 @@
+{# learning_hub/templates/learning_hub/contact_success.html #}
+{% extends "learning_hub/base.html" %} {# Сиздин негизги base.html шаблонуңузга жол #}
+{% load static %}
+
+{% block title %}Билдирүүңүз жөнөтүлдү - TechPerson{% endblock title %}
+
+{% block extra_head %}
+    {# Бул бет үчүн Font Awesome керек болушу мүмкүн, эгер base.html'де жок болсо #}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+{% endblock %}
+
+{% block content %} {# Же content_full_width, эгер base.html'де ошондой болсо #}
+<div class="container text-center py-5 my-5"> {# my-5 үстүнөн-астынан көбүрөөк боштук #}
+    <div class="card shadow-lg p-5 mx-auto" style="max-width: 650px; border-radius: 15px;">
+        <div style="font-size: 5rem; color: var(--bs-success, #198754);"> {# Bootstrap'тун success түсү #}
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h1 class="display-5 mt-4 mb-3" style="font-weight: 600;">Ийгиликтүү!</h1>
+        <p class="lead" style="font-size: 1.15rem; color: var(--text-medium, #555);">
+            Сиздин билдирүүңүз кабыл алынды. <br>
+            Биз сиз менен жакынкы арада байланышабыз.
+        </p>
+        <hr class="my-4" style="width: 80%; margin-left: auto; margin-right: auto;">
+        <p style="font-size: 0.95rem; color: var(--text-light, #777);">
+            Башка суроолоруңуз болсо, кайрадан байланыш формасын колдонсоңуз болот же биздин социалдык тармактарга жазыңыз.
+        </p>
+        <div class="mt-4">
+            <a href="{% url 'learning_hub:home' %}" class="btn btn-primary btn-lg px-4 me-2">
+                <i class="fas fa-home me-2"></i>Башкы бетке кайтуу
+            </a>
+            <a href="{% url 'learning_hub:contact' %}" class="btn btn-outline-secondary btn-lg px-4">
+                Дагы билдирүү жазуу
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock content %}

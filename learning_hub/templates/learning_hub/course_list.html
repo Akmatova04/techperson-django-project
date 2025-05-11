@@ -1,0 +1,85 @@
+{% extends "learning_hub/base.html" %}
+{% load static %}
+
+{% block title %}{{ current_category_name|default:"Бардык Курстар" }} - TechPerson{% endblock title %}
+
+{% block content_title %}
+    <div class="section-title-container">
+        <h1 class="section-title">{{ current_category_name|default:"Бардык Курстар" }} {% if courses %}({{ courses|length }}){% endif %}</h1>
+       
+        {% if request.GET.category %}
+            <a href="{% url 'learning_hub:course_list' %}" class="btn btn-outline-primary btn-small" style="margin-left: auto;">Баардыгын көрсөтүү</a>
+        {% endif %}
+    </div>
+    {% if categories %}
+        <div class="category-filters">
+            <a href="{% url 'learning_hub:course_list' %}" {% if not request.GET.category %}class="active"{% endif %}>Баардыгы</a>
+            {% for cat in categories %}
+                {# --- УШУЛ ЖЕРДЕ ОҢДОЛДУ --- #}
+                <a href="?category={{ cat.slug }}" {% if request.GET.category == cat.slug %}class="active"{% endif %}>{{ cat.name }}</a>
+                {# --- /УШУЛ ЖЕРДЕ ОҢДОЛДУ --- #}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock content_title %}
+
+{% block content %}
+    {% if courses %}
+        <ul class="item-list">
+            {% for course in courses %}
+                <li class="item-card">
+                    <a href="{% url 'learning_hub:course_detail' course.id %}" class="item-card-image-link">
+                        <div class="item-card-image-placeholder">
+                            {% if course.image %}
+                                <img src="{{ course.image.url }}" alt="{{ course.title }}">
+                            {% else %}
+                                <div class="placeholder-initial">{{ course.title|slice:":1"|upper }}</div>
+                            {% endif %}
+                        </div>
+                    </a>
+                    <div class="item-card-content">
+                        <h2><a href="{% url 'learning_hub:course_detail' course.id %}">{{ course.title }}</a></h2>
+                        
+                        {% if course.category %}
+                        <p class="meta-info category-badge">
+                            <a href="{% url 'learning_hub:course_list' %}?category={{ course.category.slug }}">{{ course.category.name }}</a>
+                        </p>
+                        {% endif %}
+
+                        <p class="meta-info">
+                            {% if course.mentor %}
+                                <span style="display: block; margin-bottom: 3px;">Ментор: {{ course.mentor.full_name }}</span>
+                            {% endif %}
+                            Узактыгы: {{ course.duration_months }} ай | Старт: {{ course.start_date|date:"d-M, Y"|default:"Жакында" }}
+                        </p>
+
+                        <p class="description">
+                            {{ course.description|truncatewords_html:12|striptags }}
+                        </p>
+                    </div>
+                    <div class="item-card-footer">
+                        <span class="price">{{ course.price|floatformat:0 }} сом</span>
+                        <a href="{% url 'learning_hub:course_detail' course.id %}" class="btn btn-primary btn-small">Кененирээк</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="no-items" style="text-align: center; padding: 50px 0; font-size: 1.1rem;">
+            {% if request.GET.category %}
+                <b>"{{ current_category_name }}"</b> категориясында азырынча курстар жок.
+            {% else %}
+                Азырынча курстар жок.
+            {% endif %}
+        </p>
+    {% endif %}
+{% endblock content %}
+
+{% block extra_head %}
+<style>
+    .category-filters { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 30px; }
+    .category-filters a { display: inline-block; padding: 8px 18px; border: 1px solid var(--border-color); border-radius: 50px; font-size: 0.9rem; font-weight: 500; color: var(--text-medium); transition: all var(--transition-ease); }
+    .category-filters a:hover { background-color: var(--very-light-purple); border-color: var(--primary-purple); color: var(--primary-purple); text-decoration: none; }
+    .category-filters a.active { background-color: var(--primary-purple); color: var(--bg-white); border-color: var(--primary-purple); font-weight: 600; box-shadow: var(--shadow-sm); }
+</style>
+{% endblock %}

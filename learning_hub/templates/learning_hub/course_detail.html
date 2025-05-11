@@ -1,0 +1,142 @@
+{% extends "learning_hub/base.html" %}
+{% load static %}
+
+{% block title %}{{ course.title }} - Курстар - TechPerson{% endblock title %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+<style>
+    .detail-page-wrapper { padding-top: 40px; padding-bottom: 60px; background-color: var(--bg-light-gray, #f8f9fa); }
+    .course-main-content-block { background-color: var(--bg-white, #ffffff); padding: 30px; border-radius: var(--border-radius-lg, 12px); box-shadow: var(--shadow-md, 0 4px 12px rgba(0,0,0,0.07)); }
+    .detail-image-container img { width: 100%; max-height: 450px; object-fit: cover; border-radius: var(--border-radius-md, 8px); margin-bottom: 25px; }
+    .detail-title { font-size: 2.4rem; font-weight: 700; color: var(--text-dark, #212529); margin-bottom: 10px; line-height: 1.3; }
+    .detail-category-badge a { display: inline-block; padding: 6px 15px; border-radius: 50px; background-color: var(--very-light-purple, #ede9fe); color: var(--primary-purple, #7c3aed); font-size: 0.8rem; font-weight: 600; text-decoration: none; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .detail-category-badge a:hover { background-color: var(--primary-purple, #7c3aed); color: var(--bg-white, #fff); }
+    .course-sidebar .card { border: none; border-radius: var(--border-radius-lg, 12px); box-shadow: var(--shadow-sm, 0 2px 6px rgba(0,0,0,0.06)); } /* Көлөкөнү бир аз жеңилдеттим */
+    .course-sidebar .card-title { font-size: 1.25rem; font-weight: 600; color: var(--text-dark); }
+    .detail-meta-grid { font-size: 0.9rem; }
+    .meta-item { margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; padding-bottom: 8px; border-bottom: 1px dashed var(--border-color, #eee); }
+    .meta-item:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0;}
+    .meta-item .meta-label { color: var(--text-light, #6c757d); font-size: 0.85rem; text-transform: uppercase; }
+    .meta-item .meta-value { font-weight: 500; color: var(--text-medium, #495057); text-align: right; }
+    .meta-item .meta-value a { color: var(--primary-purple); text-decoration: none; font-weight: 500; }
+    .meta-item .meta-value a:hover { text-decoration: underline; }
+    .meta-item.price-item .meta-value.price { font-size: 1.8rem; font-weight: 700; color: var(--accent-pink, #ec4899); }
+    .detail-actions .btn-cta { padding: 12px 25px; font-size: 1rem; font-weight: 500; } /* btn-lg'ден бир аз кичирээк */
+    .detail-description-section h2, .related-content-section .section-title { font-size: 1.7rem; font-weight: 600; color: var(--text-dark); margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid var(--primary-purple, #7c3aed); display: inline-block; }
+    .description-text { font-size: 1rem; line-height: 1.75; color: var(--text-medium); }
+    .description-text p { margin-bottom: 1.1em; }
+    .sticky-sidebar { position: -webkit-sticky; position: sticky; top: 90px; /* Header бийиктиги + боштук */ }
+</style>
+{% endblock %}
+
+{% block content %} {# content_full_width ордуна content, эгер base.html'де .container бар болсо #}
+<section class="detail-page-wrapper">
+    <div class="container">
+        <div class="row g-lg-5"> 
+            <div class="col-lg-7">
+                <div class="course-main-content-block">
+                    {% if course.image %}
+                        <div class="detail-image-container">
+                            <img src="{{ course.image.url }}" alt="{{ course.title }}">
+                        </div>
+                    {% else %}
+                        <div class="alert alert-light text-center py-5 mb-4" role="alert" style="height: 300px; display:flex; align-items:center; justify-content:center;">
+                            Сүрөт азырынча жок
+                        </div>
+                    {% endif %}
+
+                    <h1 class="detail-title">{{ course.title }}</h1>
+
+                    {% if course.category %}
+                        <p class="detail-category-badge">
+                            <a href="{% url 'learning_hub:course_list' %}?category={{ course.category.slug }}">{{ course.category.name }}</a>
+                        </p>
+                    {% endif %}
+                    
+                    <div class="detail-description-section mt-4">
+                        <h2><i class="fas fa-info-circle me-2"></i>Курс жөнүндө толук маалымат</h2>
+                        <div class="description-text">
+                            {{ course.description|linebreaksbr }}
+                        </div>
+                    </div>
+
+                    {% if course.what_you_will_learn %} 
+                    <div class="detail-description-section mt-5">
+                        <h2><i class="fas fa-graduation-cap me-2"></i>Эмнелерди үйрөнөсүз?</h2>
+                        <div class="description-text">
+                            {{ course.what_you_will_learn|linebreaksbr }}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            {# --- ОҢ КОЛОНКА: Кыскача маалымат жана катталуу баскычы --- #}
+            <div class="col-lg-5">
+                <div class="course-sidebar sticky-sidebar">
+                    <div class="card">
+                        <div class="card-body p-4">
+                            <h4 class="card-title mb-4">Курс маалыматы</h4>
+                            <div class="detail-meta-grid">
+                                <div class="meta-item">
+                                    <span class="meta-label"><i class="fas fa-chalkboard-teacher me-1"></i>Ментор</span>
+                                    <span class="meta-value">
+                                        {% if course.mentor %}
+                                            <a href="{% url 'learning_hub:mentor_detail' course.mentor.id %}">{{ course.mentor.full_name }}</a>
+                                        {% else %}
+                                            Белгисиз
+                                        {% endif %}
+                                    </span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="meta-label"><i class="far fa-clock me-1"></i>Узактыгы</span>
+                                    <span class="meta-value">{{ course.duration_months }} ай</span>
+                                </div>
+                                {% if course.start_date %}
+                                <div class="meta-item">
+                                    <span class="meta-label"><i class="far fa-calendar-alt me-1"></i>Старт</span>
+                                    <span class="meta-value">{{ course.start_date|date:"d-F, Y" }}</span>
+                                </div>
+                                {% endif %}
+                                <div class="meta-item price-item mt-3"> {# Бул акыркысы болгондуктан, астындагы сызыкты CSS менен алсак болот #}
+                                    <span class="meta-label">Баасы</span>
+                                    <span class="meta-value price">{{ course.price|floatformat:0 }} сом</span>
+                                </div>
+                            </div>
+
+                            <div class="detail-actions mt-4"> {# border-top'ту алып салдым, анткени баадан кийин #}
+                                 {% if user.is_authenticated %}
+                                     {% if course_is_purchased_by_user %}
+                                         <div class="alert alert-success text-center small py-2">Сиз бул курска жазылгансыз!</div>
+                                         {# <a href="#" class="btn btn-info btn-lg d-block w-100 btn-cta"><i class="fas fa-play-circle me-2"></i>Курсту баштоо</a> #}
+                                     {% else %}
+                                         <form method="post" action="{% url 'learning_hub:enroll_in_course' course_id=course.id %}">
+                                             {% csrf_token %}
+                                             <button type="submit" class="btn btn-success btn-lg btn-cta w-100">
+                                                 <i class="fas fa-check-circle me-2"></i>Бул Курска Жазылуу
+                                             </button>
+                                         </form>
+                                     {% endif %}
+                                 {% else %}
+                                     <a href="{% url 'users:request_otp' %}?next={{ request.path|urlencode }}" class="btn btn-primary btn-lg btn-cta w-100">
+                                         <i class="fas fa-user-plus me-2"></i>Курска Катталуу (Кирүү/Каттоо)
+                                     </a>
+                                 {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> {# row аягы #}
+
+   
+
+    <div class="back-link-container text-center mt-5 mb-4"> {# mb-4 коштук, астынан боштук #}
+        <a href="{% url 'learning_hub:course_list' %}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Бардык курстарга кайтуу
+        </a>
+    </div>
+    </div> {# container аягы #}
+</section>
+{% endblock content %}

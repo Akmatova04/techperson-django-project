@@ -1,0 +1,46 @@
+{% extends "learning_hub/base.html" %}
+{% load static %}
+
+{% block title %}{{ page_title }} - TechPerson{% endblock title %}
+
+{% block content_title %}
+     <div class="section-title-container">
+        <h1 class="section-title">{{ page_title }} {% if mentors %}({{ mentors|length }}){% endif %}</h1>
+
+    </div>
+{% endblock content_title %}
+
+{% block content %}
+    {% if mentors %}
+        <ul class="item-list"> 
+            {% for mentor in mentors %}
+                <li class="item-card"> 
+                    <a href="{% url 'learning_hub:mentor_detail' mentor.id %}" class="item-card-image-link">
+                        <div class="item-card-image-placeholder"> 
+                            {% if mentor.photo %}
+                                <img src="{{ mentor.photo.url }}" alt="{{ mentor.full_name }}">
+                            {% else %}
+                                <div class="placeholder-initial">{{ mentor.full_name|slice:":1"|upper }}</div>
+                            {% endif %}
+                        </div>
+                    </a>
+                    <div class="item-card-content"> 
+                        <h2><a href="{% url 'learning_hub:mentor_detail' mentor.id %}">{{ mentor.full_name }}</a></h2>
+                        <p class="meta-info" style="color: var(--primary-purple); font-weight: 600; margin-bottom: 10px;">
+                            {{ mentor.specialization|default:"IT Эксперт" }}
+                        </p>
+                        <p class="description">
+                            {{ mentor.bio|truncatewords_html:15|striptags }} 
+                        </p>
+                    </div>
+                    <div class="item-card-footer"> 
+                        <span class="price" style="visibility: hidden;"> </span> 
+                        <a href="{% url 'learning_hub:mentor_detail' mentor.id %}" class="btn btn-primary btn-small">Профилин көрүү</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="no-items" style="text-align: center; padding: 50px 0; font-size: 1.1rem;">Азырынча менторлор жок.</p>
+    {% endif %}
+{% endblock content %}

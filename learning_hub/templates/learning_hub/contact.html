@@ -1,0 +1,326 @@
+{% extends "learning_hub/base.html" %}
+{% load static %}
+
+{% block title %}{{ page_title|default:"Биз менен байланышыңыз" }} - TechPerson{% endblock title %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"> 
+<style>
+    /* --- ЖАЛПЫ БЕТ ҮЧҮН --- */
+    .contact-page-wrapper {
+        padding-bottom: 50px; 
+    }
+
+    /* --- БАШКЫ БАННЕР --- */
+    .contact-hero-banner {
+        background: linear-gradient(135deg, var(--primary-purple, #7C3AED) 0%, var(--dark-purple, #5b21b6) 100%);
+        color: var(--bg-white, #ffffff);
+        padding: 70px 20px;
+        text-align: center;
+        margin-bottom: 50px;
+    }
+    .contact-hero-banner h1 {
+        font-size: 2.8rem; 
+        font-weight: 700;
+        margin-bottom: 15px;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+    }
+    .contact-hero-banner p {
+        font-size: 1.15rem;
+        opacity: 0.9;
+        max-width: 650px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* --- БАЙЛАНЫШ МААЛЫМАТ КАРТАЛАРЫ --- */
+    .contact-info-section-title {
+        font-size: 2rem;
+        font-weight: 600;
+        color: var(--text-dark, #333);
+        margin-bottom: 35px;
+        text-align: center;
+        position: relative;
+        padding-bottom: 15px;
+    }
+    .contact-info-section-title::after {
+        content: '';
+        display: block;
+        width: 80px;
+        height: 3px;
+        background: linear-gradient(90deg, var(--primary-purple, #712cf9), var(--accent-pink, #E91E63));
+        margin: 10px auto 0 auto;
+        border-radius: 2px;
+    }
+
+    .contact-info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+        gap: 30px;
+        margin-bottom: 60px;
+    }
+    .contact-info-card {
+        background-color: var(--bg-white, #ffffff);
+        padding: 30px 25px;
+        border-radius: var(--border-radius-lg, 12px);
+        text-align: center;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
+        transition: transform 0.25s ease-out, box-shadow 0.25s ease-out;
+    }
+    .contact-info-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+    .contact-info-icon { /* Бул Font Awesome иконкалары үчүн болот */
+        font-size: 2.5rem; 
+        color: var(--primary-purple, #712cf9);
+        margin-bottom: 20px;
+        display: inline-block; 
+        line-height: 1;
+    }
+    /* Эгер SVG колдонсоңуз, бул кереги жок, анткени SVG'нин өзүнө класс беребиз */
+    /* .contact-info-card-icon svg { width: 40px; height: 40px; } */
+    
+    .contact-info-card h5 { 
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: var(--text-dark, #333);
+    }
+    .contact-info-card p {
+        font-size: 0.95rem;
+        color: var(--text-medium, #555);
+        line-height: 1.65;
+        margin-bottom: 8px;
+    }
+    .contact-info-card p:last-child { margin-bottom: 0; }
+    .contact-info-card p a { color: var(--primary-purple); text-decoration: none; font-weight: 500; }
+    .contact-info-card p a:hover { text-decoration: underline; color: var(--dark-purple); }
+    
+    .social-icons-contact-card { /* Бул social-icons-contact болушу керек эле, эгер мурунку CSS'ти колдонсоңуз */
+        display: flex;
+        justify-content: center;
+        gap: 20px; 
+        margin-top: 15px;
+    }
+    .social-icons-contact-card a svg.social-icon { /* SVG'ге "social-icon" классын кошобуз */
+        width: 28px; 
+        height: 28px;
+        fill: var(--text-light, #adb5bd); 
+        transition: fill 0.25s ease-in-out, transform 0.25s ease-in-out;
+    }
+    .social-icons-contact-card a:hover svg.social-icon {
+        transform: scale(1.15); 
+    }
+    .social-icons-contact-card a:hover svg.icon-instagram { fill: #E1306C; }
+    .social-icons-contact-card a:hover svg.icon-facebook { fill: #1877F2; }
+    .social-icons-contact-card a:hover svg.icon-telegram { fill: #0088cc; }
+    .social-icons-contact-card a:hover svg.icon-whatsapp { fill: #25D366; }
+
+    /* --- БАЙЛАНЫШ ФОРМАСЫ --- */
+    .contact-form-container {
+        background-color: var(--bg-white, #ffffff);
+        padding: 40px;
+        border-radius: var(--border-radius-lg, 12px);
+        box-shadow: 0 8px 30px rgba(0,0,0,0.09);
+    }
+    .contact-form-title {
+        text-align: center;
+        font-size: 2.2rem; 
+        font-weight: 700;
+        color: var(--text-dark, #222);
+        margin-bottom: 20px;
+        position: relative;
+    }
+    .contact-form-title::after {
+        content: '';
+        display: block;
+        width: 90px;
+        height: 3.5px;
+        background: linear-gradient(90deg, var(--primary-purple, #712cf9), var(--accent-pink, #E91E63));
+        margin: 15px auto 40px auto;
+        border-radius: 3px;
+    }
+    .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        font-size: 0.9rem; 
+        color: var(--text-medium, #454f5b);
+    }
+    .form-control { /* Бул Bootstrap'тун .form-control классына окшош */
+        display: block;
+        width: 100%;
+        padding: .75rem 1rem; /* Сиздин мурунку стилиңиз */
+        font-size: 1rem; /* Сиздин мурунку стилиңиз */
+        line-height: 1.5;
+        color: #495057; /* Сиздин мурунку стилиңиз */
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da; /* Сиздин мурунку стилиңиз */
+        border-radius: .25rem; /* Сиздин мурунку стилиңиз */
+        transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+    .form-control:focus { /* Сиздин мурунку стилиңиз */
+        color: #495057;
+        background-color: #fff;
+        border-color: #80bdff; 
+        outline: 0;
+        box-shadow: 0 0 0 .2rem rgba(0,123,255,.25);
+    }
+    textarea.form-control { min-height: 130px; }
+    .invalid-feedback.d-block { /* Бул Bootstrap үчүн, каталарды көрсөтүү */
+        display: block !important;
+        width: 100%;
+        margin-top: .25rem;
+        font-size: .875em;
+        color: #dc3545;
+    }
+    .btn-submit-contact-form {
+        background: linear-gradient(45deg, var(--bs-success, #198754), #13653f);
+        border: none;
+        color: white;
+        padding: 0.8rem 2.2rem;
+        font-size: 1.05rem;
+        font-weight: 500;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .btn-submit-contact-form:hover {
+        background-position: right center;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(25, 135, 84, 0.3);
+        color: white;
+    }
+    .btn-submit-contact-form i { margin-right: 8px; }
+</style>
+{% endblock extra_head %}
+
+{% block content_full_width %}
+<div class="contact-page-wrapper">
+    <section class="contact-hero-banner">
+        <h1>{{ page_title|default:"Биз менен байланышыңыз" }}</h1>
+        <p>Сиздин суроолоруңузга жооп берүүгө ар дайым даярбыз! 
+            Төмөнкү форманы толтуруңуз же башка ыңгайлуу жол менен байланышыңыз.</p>
+    </section>
+
+    <div class="container">
+        <div class="mb-5"> 
+            <h3 class="contact-info-section-title">Байланыш маалыматтары</h3>
+            <div class="contact-info-grid">
+                <div class="contact-info-card">
+                    <div class="contact-info-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <h5>Дарек</h5>
+                    <p><a href="{{ google_maps_url }}" target="_blank" rel="noopener noreferrer">{{ address_text|linebreaksbr }}</a></p>
+                    <p class="working-hours"><small><i class="far fa-clock me-1"></i>{{ working_hours }}</small></p>
+                </div>
+
+                <div class="contact-info-card">
+                    <div class="contact-info-icon"><i class="fas fa-phone-alt"></i></div>
+                    <h5>Телефон</h5>
+                    {% if phone_1_display %}<p><a href="tel:{{ phone_1_tel }}">{{ phone_1_display }}</a></p>{% endif %}
+                    {% if phone_2_display %}<p><a href="tel:{{ phone_2_tel }}">{{ phone_2_display }}</a></p>{% endif %}
+                </div>
+
+                <div class="contact-info-card">
+                    <div class="contact-info-icon"><i class="fas fa-envelope"></i></div>
+                    <h5>Email</h5>
+                    {% if email_1 %}<p><a href="mailto:{{ email_1 }}">{{ email_1 }}</a></p>{% endif %}
+                    {% if email_2 %}<p><a href="mailto:{{ email_2 }}">{{ email_2 }}</a></p>{% endif %}
+                </div>
+                
+                <div class="contact-info-card">
+                    <div class="contact-info-icon"><i class="fas fa-share-alt"></i></div>
+                    <h5>Социалдык тармактар</h5>
+                    <div class="social-icons-contact-card">
+                        {% if social_links.instagram %}
+                            <a href="{{ social_links.instagram }}" target="_blank" title="Instagram" aria-label="Instagram">
+                                <svg class="social-icon icon-instagram" viewBox="0 0 24 24"> {/* fill="currentColor" атрибутун алып салдык, CSS менен башкарабыз */}
+                                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919C8.452 2.175 8.792 2.163 12 2.163m0 1.623c-3.312 0-3.68.012-4.97.07-2.703.123-3.764 1.184-3.886 3.886-.058 1.29-.07 1.66-.07 4.97s.012 3.68.07 4.97c.122 2.702 1.183 3.763 3.886 3.886 1.29.058 1.658.07 4.97.07s3.68-.012 4.97-.07c2.702-.123 3.763-1.184 3.886-3.886.058-1.29.07-1.66.07-4.97s-.012-3.68-.07-4.97c-.123-2.702-1.184-3.763-3.886-3.886-1.29-.058-1.658-.07-4.97-.07zm0 3.969c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4c2.21 0 4 1.791 4 4s-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                                </svg>
+                            </a>
+                        {% endif %}
+                        {% if social_links.facebook %}
+                            <a href="{{ social_links.facebook }}" target="_blank" title="Facebook" aria-label="Facebook">
+                                <svg class="social-icon icon-facebook" viewBox="0 0 24 24">
+                                    <path d="M22.675 0h-21.35C.593 0 0 .593 0 1.325v21.351C0 23.407.593 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116c.732 0 1.325-.593 1.325-1.325V1.325C24 .593 23.407 0 22.675 0z"/>
+                                </svg>
+                            </a>
+                        {% endif %}
+                        {% if social_links.telegram %}
+                            <a href="{{ social_links.telegram }}" target="_blank" title="Telegram" aria-label="Telegram">
+                                <svg class="social-icon icon-telegram" viewBox="0 0 24 24">
+                                    <path d="M20.665 3.717L3.132 10.554c-1.21.48-1.203 2.164.007 2.652l4.264 1.558 9.925-6.217c.472-.297.902-.134.523.234l-7.984 7.132v5.262c1.005 0 1.393-.443 1.944-.977l2.06-1.983 4.32 3.184c.934.608 1.902.292 2.168-.911l3.313-15.488c.317-1.453-.527-2.126-1.65-1.632z"/>
+                                </svg>
+                            </a>
+                        {% endif %}
+                        {% if social_links.whatsapp %}
+                            <a href="{{ social_links.whatsapp }}" target="_blank" title="WhatsApp" aria-label="WhatsApp">
+                                <svg class="social-icon icon-whatsapp" viewBox="0 0 24 24">
+                                    <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.38 1.25 4.85L2.06 21.58l4.94-1.3c1.41.71 3 .98 4.48.98h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm0 18.07c-1.4 0-2.8-.35-4.04-1.01l-.29-.17-3 1.51.94-2.92-.19-.31A8.087 8.087 0 0 1 4.09 11.91c0-4.46 3.63-8.09 8.09-8.09s8.09 3.63 8.09 8.09-3.63 8.09-8.09 8.09zm4.26-5.57c-.27-.13-1.59-.78-1.84-.87-.25-.09-.43-.13-.62.13-.19.26-.7.87-.86 1.04-.16.18-.32.19-.59.07-.27-.13-1.14-.42-2.17-1.34-.81-.72-1.36-1.61-1.52-1.88-.16-.27-.01-.42.12-.54.11-.11.25-.27.37-.41.13-.13.17-.22.26-.38.09-.16.04-.3-.02-.43s-.62-1.48-.85-2.03c-.23-.55-.46-.48-.62-.48-.16 0-.34-.01-.52-.01s-.43.07-.66.34c-.23.27-.86.84-.86 2.05s.83 2.38.96 2.59c.13.22.86 1.39 2.1 1.93.29.13.53.21.72.27.37.13.71.11.97.07.29-.04.9-.37 1.03-.72.13-.35.13-.65.09-.72l-.07-.12z"/>
+                                </svg>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# --- ФОРМА БӨЛҮГҮ --- #}
+        <div class="row justify-content-center mt-0"> 
+            <div class="col-lg-10 col-xl-8">
+                <div class="contact-form-container">
+                    <h3 class="contact-form-title">Сурооңузду жазыңыз</h3>
+                    
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="post" action="{% url 'learning_hub:contact' %}">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.name.id_for_label }}" class="form-label">{{ form.name.label }}</label>
+                                <input type="text" name="{{ form.name.html_name }}" id="{{ form.name.id_for_label }}" class="form-control {% if form.name.errors %}is-invalid{% endif %}" placeholder="Мисалы, Асан" value="{{ form.name.value|default_if_none:'' }}" {% if form.name.field.required %}required{% endif %}>
+                                {% for error in form.name.errors %}<div class="invalid-feedback">{{ error }}</div>{% endfor %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.email.id_for_label }}" class="form-label">{{ form.email.label }}</label>
+                                <input type="email" name="{{ form.email.html_name }}" id="{{ form.email.id_for_label }}" class="form-control {% if form.email.errors %}is-invalid{% endif %}" placeholder="email@example.com" value="{{ form.email.value|default_if_none:'' }}" {% if form.email.field.required %}required{% endif %}>
+                                {% for error in form.email.errors %}<div class="invalid-feedback">{{ error }}</div>{% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.subject.id_for_label }}" class="form-label">{{ form.subject.label }}</label>
+                            <input type="text" name="{{ form.subject.html_name }}" id="{{ form.subject.id_for_label }}" class="form-control {% if form.subject.errors %}is-invalid{% endif %}" placeholder="Курс боюнча суроо" value="{{ form.subject.value|default_if_none:'' }}" {% if form.subject.field.required %}required{% endif %}>
+                            {% for error in form.subject.errors %}<div class="invalid-feedback">{{ error }}</div>{% endfor %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.message.id_for_label }}" class="form-label">{{ form.message.label }}</label>
+                            <textarea name="{{ form.message.html_name }}" id="{{ form.message.id_for_label }}" class="form-control {% if form.message.errors %}is-invalid{% endif %}" rows="5" placeholder="Сурооңузду же сунушуңузду ушул жерге жазыңыз..." {% if form.message.field.required %}required{% endif %}>{{ form.message.value|default_if_none:'' }}</textarea>
+                            {% for error in form.message.errors %}<div class="invalid-feedback">{{ error }}</div>{% endfor %}
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-submit-contact-form"><i class="fas fa-paper-plane me-2"></i>Жөнөтүү</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div> 
+</div> 
+{% endblock content_full_width %}
+
+{% block content %}
+    {# Бул блок бош калат #}
+{% endblock content %}

@@ -1,0 +1,67 @@
+{% extends "learning_hub/base.html" %}
+{% load static %}
+
+{% block title %}{{ page_title }} - TechPerson{% endblock title %}
+
+{% block content_title %}
+    <div class="section-title-container text-center py-4"> {# py-4 үстүнөн-астынан боштук #}
+        <h1 class="section-title">{{ page_title }}</h1>
+        {% if query %}
+            {% if results_found %}
+                <p class="text-muted mt-2"><small>{{ courses_results.count }} курс табылды.</small></p>
+                {# Эгер менторлорду да издесеңиз: <p>Жалпы {{ results_count }} натыйжа табылды.</p> #}
+            {% else %}
+                <p class="lead mt-3">Тилекке каршы, сиздин сурамыңыз боюнча эч нерсе табылган жок.</p>
+                <p class="mt-2">Сураныч, башка сөздөр менен издеп көрүңүз же <a href="{% url 'learning_hub:course_list' %}">бардык курстарды</a> караңыз.</p>
+            {% endif %}
+        {% else %}
+            <p class="lead mt-3">Сураныч, издөө үчүн бир нерсе жазыңыз.</p>
+        {% endif %}
+    </div>
+{% endblock content_title %}
+
+{% block content %}
+<div class="container"> {# Контейнер кошобуз, эгер base.html'деги content блогунда жок болсо #}
+    {% if query and courses_results %}
+        <h3 class="mb-4">Табылган курстар:</h3>
+        <ul class="item-list"> {# Сиздин course_list.html'дегидей item-list #}
+            {% for course in courses_results %}
+                <li class="item-card">
+                    <a href="{% url 'learning_hub:course_detail' course.id %}" class="item-card-image-link">
+                        <div class="item-card-image-placeholder">
+                            {% if course.image and course.image.url %}
+                                <img src="{{ course.image.url }}" alt="{{ course.title }}">
+                            {% else %}
+                                <div class="placeholder-initial">{{ course.title|slice:":1"|upper }}</div>
+                            {% endif %}
+                        </div>
+                    </a>
+                    <div class="item-card-content">
+                        <h2 class="h5"><a href="{% url 'learning_hub:course_detail' course.id %}">{{ course.title }}</a></h2>
+                        {% if course.category %}
+                        <p class="meta-info category-badge">
+                            <a href="{% url 'learning_hub:course_list' %}?category={{ course.category.slug }}">{{ course.category.name }}</a>
+                        </p>
+                        {% endif %}
+                        <p class="description small">
+                            {{ course.short_description|default:course.description|truncatewords_html:20|striptags }}
+                        </p>
+                    </div>
+                    <div class="item-card-footer">
+                        <span class="price fw-bold">{{ course.price|floatformat:0 }} сом</span>
+                        <a href="{% url 'learning_hub:course_detail' course.id %}" class="btn btn-primary btn-sm">Кененирээк</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% elif query and not results_found %}
+        {# Билдирүү content_title'да чыкты, бул жерде кайталоонун кереги жок #}
+    {% elif not query %}
+        <p class="text-center">Издөө үчүн жогорудагы форманы колдонуңуз.</p>
+    {% endif %}
+    
+    <div class="text-center mt-5">
+        <a href="{% url 'learning_hub:home' %}" class="btn btn-outline-secondary"><i class="fas fa-home me-1"></i> Башкы бетке кайтуу</a>
+    </div>
+</div>
+{% endblock content %}

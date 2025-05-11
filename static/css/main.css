@@ -1,0 +1,1259 @@
+/* static/css/main.css - ФИОЛЕТ ДИЗАЙН + ПРИНЦИПТЕР СЕКЦИЯСЫ */
+
+/* --- CSS Өзгөрмөлөрү (Variables) --- */
+:root {
+    --bg-dark: #181818;
+    --bg-card: #242424;
+    --primary-purple: #7C3AED;
+    --dark-purple: #6D28D9;
+    --light-purple: #A78BFA;
+    --very-light-purple: #EDE9FE;
+    --gradient-start: var(--primary-purple);
+    --gradient-end: var(--dark-purple);
+    --accent-pink: #EC4899;
+    --accent-teal: #14B8A6;
+    --text-dark: #111827;
+    --text-medium: #4B5563;
+    --text-light: #9CA3AF;
+    --bg-white: #ffffff;
+    --bg-light-gray: #F9FAFB;
+    --border-color: #E5E7EB;
+    --input-bg: #F3F4F6;
+    --font-main: 'Inter', sans-serif;
+    --container-max-width: 1280px;
+    --border-radius-sm: 6px;
+    --border-radius-md: 10px;
+    --border-radius-lg: 16px;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.07);
+    --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.08);
+    --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.1);
+    --transition-ease: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --- Жалпы Стилдер --- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 100%; }
+body {
+    font-family: var(--font-main); background-color: var(--bg-white); color: var(--text-medium);
+    line-height: 1.75; font-size: 1rem; font-weight: 400;
+    -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+}
+.container { width: 90%; max-width: var(--container-max-width); margin-left: auto; margin-right: auto; padding-left: 15px; padding-right: 15px; }
+a { color: var(--primary-purple); text-decoration: none; transition: color var(--transition-ease), opacity var(--transition-ease); }
+a:hover { color: var(--dark-purple); opacity: 0.85; }
+img { max-width: 100%; height: auto; display: block; }
+h1, h2, h3, h4, h5, h6 { font-weight: 700; line-height: 1.3; color: var(--text-dark); margin-bottom: 0.75em; }
+h1 { font-size: 2.75rem; font-weight: 800; letter-spacing: -0.02em; }
+h2 { font-size: 2rem; font-weight: 700; letter-spacing: -0.01em; }
+h3 { font-size: 1.5rem; font-weight: 600; }
+p { margin-bottom: 1.5rem; }
+
+/* --- Header & Navigation --- */
+.site-header {
+    background: linear-gradient(90deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+    color: var(--bg-white); padding: 18px 0;
+    box-shadow: var(--shadow-md); position: sticky; top: 0; z-index: 1000;
+}
+.header-container { display: flex; justify-content: space-between; align-items: center; }
+.site-logo a { font-size: 1.8rem; font-weight: 800; color: var(--bg-white); letter-spacing: -0.5px; }
+.site-logo a:hover { opacity: 1; }
+nav.main-navigation ul { list-style: none; display: flex; align-items: center; }
+nav.main-navigation ul li { margin-left: 35px; }
+nav.main-navigation ul li a {
+    color: rgba(255, 255, 255, 0.85); font-weight: 600; padding: 10px 0px; font-size: 1rem;
+    position: relative; border-bottom: 3px solid transparent;
+    transition: color var(--transition-ease), border-color var(--transition-ease);
+}
+nav.main-navigation ul li a:hover,
+nav.main-navigation ul li a.active { color: var(--bg-white); border-bottom-color: var(--accent-pink); }
+nav.main-navigation ul li a.active { font-weight: 700; }
+.header-actions { display: flex; align-items: center; gap: 20px; }
+.search-form { display: flex; align-items: center; }
+.search-form input[type="search"] {
+    padding: 10px 15px; border: none; border-radius: var(--border-radius-md) 0 0 var(--border-radius-md);
+    background-color: rgba(255, 255, 255, 0.15); color: var(--bg-white); font-family: var(--font-main);
+    font-size: 0.9rem; width: 220px; transition: background-color var(--transition-ease), width var(--transition-ease);
+}
+.search-form input[type="search"]::placeholder { color: rgba(255, 255, 255, 0.7); }
+.search-form input[type="search"]:focus { background-color: var(--bg-white); color: var(--text-dark); outline: none; width: 260px; }
+.search-form button {
+    padding: 10px 15px; background-color: var(--dark-purple); color: var(--bg-white); border: none;
+    border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0; cursor: pointer;
+    transition: background-color var(--transition-ease);
+}
+.search-form button:hover { background-color: var(--accent-pink); }
+.search-form button svg { width: 18px; height: 18px;; display: block; }
+.auth-links a {
+    color: rgba(255, 255, 255, 0.85); font-weight: 500; font-size: 0.9rem; padding: 8px 16px;
+    border-radius: var(--border-radius-sm); border: 1px solid rgba(255,255,255,0.3);
+    transition: background-color var(--transition-ease), color var(--transition-ease), border-color var(--transition-ease);
+}
+.auth-links a:hover { background-color: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.5); color: var(--bg-white); }
+.auth-links a.admin-link { background-color: var(--accent-pink); color: var(--bg-white); border-color: var(--accent-pink); font-weight: 600;}
+.auth-links a.admin-link:hover { background-color: #c2185b; border-color: #c2185b;}
+.burger-menu-button { display: none; background: none; border: none; color: var(--bg-white); font-size: 1.8rem; cursor: pointer; padding: 5px; z-index: 1001;}
+.burger-menu-button svg { width: 28px; height: 28px; }
+
+/* --- Hero Section --- */
+.hero-section {
+    background: var(--bg-light-gray); padding: 100px 0 120px 0; text-align: center;
+    overflow: hidden; position: relative;
+}
+.hero-section::before, .hero-section::after { content: ''; position: absolute; border-radius: 50%; background: linear-gradient(45deg, var(--primary-purple), var(--accent-pink)); opacity: 0.08; filter: blur(60px); } /* Опасити азайды */
+.hero-section::before { width: 500px; height: 500px; top: -150px; left: -150px; }
+.hero-section::after { width: 400px; height: 400px; bottom: -120px; right: -120px; background: linear-gradient(45deg, var(--accent-teal), var(--light-purple));}
+.hero-section .container { position: relative; z-index: 2; }
+.hero-section h1 { font-size: 3.8rem; font-weight: 800; color: var(--text-dark); margin-bottom: 20px; line-height: 1.2;}
+.hero-section h1 span { color: var(--primary-purple); }
+.hero-section p.subtitle { font-size: 1.3rem; color: var(--text-medium); margin-bottom: 35px; max-width: 700px; margin-left: auto; margin-right: auto; font-weight: 400; }
+.hero-section .btn-cta {
+    font-size: 1.1rem; padding: 16px 40px; font-weight: 700; border-radius: var(--border-radius-md);
+    background: linear-gradient(95deg, var(--primary-purple) 0%, var(--dark-purple) 100%);
+    color: var(--bg-white); border: none; box-shadow: 0 8px 20px rgba(103, 58, 183, 0.3);
+    transition: transform var(--transition-ease), box-shadow var(--transition-ease);
+}
+.hero-section .btn-cta:hover { transform: translateY(-4px) scale(1.03); box-shadow: 0 12px 25px rgba(103, 58, 183, 0.4); }
+
+/* --- Section Titles --- */
+.section-title-container { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+h1.section-title, h2.section-title {
+    font-size: 2.25rem; font-weight: 700; color: var(--text-dark); margin: 0;
+    position: relative; padding-bottom: 15px;
+}
+h1.section-title::after, h2.section-title::after {
+    content: ''; position: absolute; bottom: 0; left: 0; width: 70px; height: 4px;
+    background: linear-gradient(90deg, var(--primary-purple) 0%, var(--accent-pink) 100%);
+    border-radius: 2px;
+}
+.section-title-container.text-center { justify-content: center; } /* text-center классы үчүн */
+.section-title-container.text-center h1.section-title::after,
+.section-title-container.text-center h2.section-title::after { left: 50%; transform: translateX(-50%); }
+
+
+   .item-list {
+    list-style: none;
+    padding: 0; /* ul/ol үчүн демейки padding алып салабыз */
+    margin: 0;  /* ul/ol үчүн демейки margin алып салабыз */
+    display: grid;
+    gap: 25px; /* Карталардын ортосундагы аралык (кааласаңыз 30px кылыңыз) */
+
+   
+    grid-template-columns: repeat(4, 1fr);
+}
+
+
+@media (max-width: 991px) {
+    .item-list {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 767px) {
+    .item-list {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px; /* Кичирээк экрандарда аралыкты бир аз азайтса болот */
+    }
+}
+
+/* Кичинекей телефондор (мисалы, экран туурасы 575px жана андан тар) */
+/* Бул жерде 1 колонка көрсөтүлөт. */
+@media (max-width: 575px) {
+    .item-list {
+        grid-template-columns: 1fr; /* Бир колонка */
+        gap: 20px;
+    }
+}
+
+
+.item-card {
+    background-color: var(--card-bg, #ffffff); /* var(--card-bg) аныкталбаса ак фон */
+    border: 1px solid var(--border-color, #E5E7EB);
+    border-radius: var(--border-radius-lg, 16px);
+    box-shadow: var(--shadow-md, 0 4px 8px rgba(0,0,0,0.07));
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform var(--transition-ease, 0.3s ease), box-shadow var(--transition-ease, 0.3s ease);
+}
+
+.item-card:hover {
+    transform: translateY(-7px);
+    box-shadow: var(--shadow-lg, 0 10px 20px rgba(0,0,0,0.08));
+}
+
+/* Сүрөт үчүн контейнер */
+.item-card-image-link {
+    display: block;
+    text-decoration: none;
+}
+
+.item-card-image-placeholder {
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 пропорциясы үчүн. Өзүңүздүн сүрөттөрүңүзгө жараша тууралаңыз */
+    position: relative;
+    background-color: var(--very-light-purple, #EDE9FE);
+    overflow: hidden;
+}
+
+.item-card-image-placeholder img,
+.item-card-image-placeholder .placeholder-initial {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.item-card:hover .item-card-image-placeholder img {
+    transform: scale(1.05);
+}
+.item-card-image-placeholder .placeholder-initial {
+    display: flex; align-items: center; justify-content: center; font-size: 4rem;
+    color: var(--light-purple, #A78BFA); font-weight: 800;
+}
+
+/* Картанын мазмуну */
+.item-card-content {
+    padding: 20px 25px;
+    display: flex; flex-direction: column; flex-grow: 1;
+}
+.item-card-content h2 {
+    font-size: 1.25rem; font-weight: 700; color: var(--text-dark, #111827);
+    margin-top: 0; margin-bottom: 8px; line-height: 1.35;
+}
+.item-card-content h2 a { color: inherit; }
+.item-card-content h2 a:hover { color: var(--primary-purple, #7C3AED); }
+
+/* ... калган .item-card-content ичиндеги p.meta-info, p.description стилдери мурункудай ... */
+
+.item-card-content p.meta-info.category-badge { margin-bottom: 10px; }
+.item-card-content p.meta-info.category-badge a {
+    display: inline-block; padding: 4px 10px; border-radius: var(--border-radius-sm, 6px);
+    background-color: var(--very-light-purple, #EDE9FE); color: var(--primary-purple, #7C3AED);
+    font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.item-card-content p.meta-info.category-badge a:hover {
+    background-color: var(--primary-purple, #7C3AED); color: var(--bg-white, #ffffff); text-decoration: none;
+}
+.item-card-content p.meta-info {
+    font-size: 0.85rem; color: var(--text-light, #9CA3AF); margin-bottom: 6px; line-height: 1.5;
+}
+.item-card-content p.description {
+    font-size: 0.9rem; color: var(--text-medium, #4B5563); margin-bottom: 15px;
+    flex-grow: 1; line-height: 1.6;
+}
+
+/* Картанын аягы (баасы жана баскыч) */
+.item-card-footer {
+    padding: 20px 25px; margin-top: auto; display: flex;
+    justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--border-color, #E5E7EB);
+}
+.item-card-footer .price {
+    font-size: 1.3rem; font-weight: 700; color: var(--primary-purple, #7C3AED);
+}
+
+/* ... калган баскыч стилдери (.btn, .btn-primary ж.б.) мурункудай ... */
+/* --- Footer --- */
+footer.site-footer {
+    background-color: var(--text-dark); color: var(--light-text);
+    padding: 60px 0 40px 0; text-align: left; margin-top: 80px;
+    font-size: 0.95rem; line-height: 1.8;
+}
+.footer-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; padding: 0; }
+.footer-section h4 { color: var(--bg-white); margin-bottom: 25px; font-size: 1.1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.footer-section ul { list-style: none; }
+.footer-section ul li { margin-bottom: 12px; }
+.footer-section ul li a { color: var(--text-light); opacity: 0.75; transition: opacity var(--transition-ease), color var(--transition-ease); }
+.footer-section ul li a:hover { opacity: 1; color: var(--primary-purple); }
+.subscribe-section p { opacity: 0.8; margin-bottom: 20px; }
+.subscribe-form { display: flex; margin-top: 15px; }
+.subscribe-form input[type="email"] {
+    flex-grow: 1; padding: 12px 15px; border: 1px solid rgba(255,255,255,0.2);
+    background-color: rgba(255,255,255,0.05); color: var(--bg-white);
+    border-radius: var(--border-radius-sm) 0 0 var(--border-radius-sm); outline: none; font-size: 0.95em;
+}
+.subscribe-form input[type="email"]::placeholder { color: rgba(255,255,255,0.5); }
+.subscribe-form input[type="email"]:focus { border-color: var(--primary-purple); background-color: rgba(255,255,255,0.1); }
+.subscribe-form button {
+    padding: 12px 20px; border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
+    background-color: var(--primary-purple); color: var(--bg-white); border: none;
+    font-weight: 600; cursor: pointer;
+}
+.subscribe-form button:hover { background-color: var(--dark-purple); }
+.get-in-touch p { margin-bottom: 12px; display: flex; align-items: flex-start; opacity: 0.8; }
+.get-in-touch p i { margin-right: 12px; color: var(--primary-purple); width: 20px; text-align: center; font-size: 1.1em; margin-top: 3px; }
+.social-icons { margin-top: 25px; display: flex; gap: 15px; flex-wrap: wrap; }
+.social-icons a {
+    color: var(--light-text); opacity: 0.7; font-size: 1.3rem;
+    width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;
+    border: 1px solid rgba(255,255,255,0.2); border-radius: 50%;
+    transition: all var(--transition-ease);
+}
+.social-icons a:hover { opacity: 1; color: var(--bg-white); background-color: var(--primary-purple); border-color: var(--primary-purple); transform: translateY(-3px) scale(1.05); }
+.footer-bottom { text-align: center; margin-top: 50px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.9rem; color: var(--text-light); opacity: 0.6; }
+.footer-bottom a { color: var(--text-light); opacity: 0.8; text-decoration: underline; }
+.footer-bottom a:hover { opacity: 1; color: var(--primary-purple); }
+
+/* --- Категория Фильтрлери (course_list.html үчүн) --- */
+.category-filters { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 30px; /* Көбүрөөк боштук */ justify-content: flex-start; /* Сол жакка */ }
+.category-filters a {
+    display: inline-block; padding: 8px 20px; /* Бир аз чоңойтулду */ border: 1px solid var(--border-color);
+    border-radius: 50px; font-size: 0.9rem; font-weight: 500; color: var(--text-medium);
+    transition: all var(--transition-ease);
+}
+.category-filters a:hover { background-color: var(--very-light-purple); border-color: var(--primary-purple); color: var(--primary-purple); text-decoration: none; }
+.category-filters a.active { background-color: var(--primary-purple); color: var(--bg-white); border-color: var(--primary-purple); font-weight: 600; box-shadow: var(--shadow-sm); }
+
+/* --- Пикирлер Секциясы --- */
+.testimonials-section { padding: 80px 0; background-color: var(--very-light-purple); }
+.testimonials-list { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 35px; }
+.testimonial-card {
+    border: none; border-radius: var(--border-radius-lg); padding: 35px;
+    background-color: var(--bg-white); box-shadow: var(--shadow-lg);
+    display: flex; flex-direction: column; position: relative;
+    transition: transform var(--transition-ease), box-shadow var(--transition-ease);
+}
+.testimonial-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-xl); }
+.testimonial-card::before {
+    content: '“'; position: absolute; top: 20px; left: 25px;
+    font-size: 5rem; color: var(--primary-purple); opacity: 0.1; line-height: 1;
+    font-family: Georgia, serif;
+}
+.testimonial-content { margin-bottom: 25px; flex-grow: 1; position: relative; z-index: 2; }
+.testimonial-text { font-size: 1.05rem; color: var(--text-medium); font-style: italic; line-height: 1.8; }
+.testimonial-author { margin-top: auto; padding-top: 20px; border-top: 1px solid var(--border-color); text-align: left; display: flex; align-items: center; }
+.testimonial-author-img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; margin-right: 15px; border: 2px solid var(--primary-purple); }
+.testimonial-author .author-name { font-weight: 700; color: var(--text-dark); margin-bottom: 3px; font-size: 1rem; }
+.testimonial-author .author-position { font-size: 0.9rem; color: var(--text-light); }
+
+/* --- "Биздин Негизги Принциптер" Секциясы (home.html) --- */
+.core-principles-section { padding: 80px 0; background-color: var(--bg-white); }
+.principles-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; /* Аралыгы көбөйдү */ }
+.principle-card {
+    background-color: var(--bg-light-gray); /* Фон бир аз өзгөрдү */
+    padding: 40px 30px; border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md); text-align: center;
+    transition: transform var(--transition-ease), box-shadow var(--transition-ease);
+}
+.principle-card:hover { transform: translateY(-10px); box-shadow: var(--shadow-lg); }
+.principle-icon {
+    font-size: 3.5rem; color: var(--primary-purple); margin-bottom: 25px; line-height: 1;
+    /* SVG иконкалар үчүн контейнер катары колдонсо болот */
+    /* display: inline-flex; width: 80px; height: 80px; background-color: var(--very-light-purple); border-radius: 50%; align-items: center; justify-content: center; */
+}
+.principle-icon svg { width: 40px; height: 40px; } /* Эгер SVG колдонсоңуз */
+.principle-card h3 { font-size: 1.4rem; font-weight: 700; color: var(--text-dark); margin-bottom: 15px; }
+.principle-card p { font-size: 1rem; color: var(--text-medium); line-height: 1.7; margin-bottom: 0; }
+
+
+/* ========== Адаптивдүүлүк (Негизги өзгөрүүлөр) ========== */
+@media (max-width: 1024px) { /* Планшеттер */
+    :root { font-size: 95%; }
+    .container { width: 92%; }
+    .header-container { padding: 0 20px; }
+    nav.main-navigation ul li { margin-left: 20px; }
+    .hero-section h1 { font-size: 3.2rem; }
+    .item-list { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+    .detail-page-header { flex-direction: column; text-align: center; align-items: center; }
+    .detail-page-header .profile-img, .detail-page-header .course-header-image { margin-right: 0; margin-bottom: 25px; }
+}
+
+@media (max-width: 768px) { /* Телефондор */
+    :root { font-size: 90%; }
+    .container { width: 94%; padding-left: 10px; padding-right: 10px; }
+    .header-container { position: relative; }
+
+    nav.main-navigation {
+        display: none; position: absolute; top: calc(100% + 1px); /* Header'дин border-bottom'ун эске алуу */
+        left: 0; right:0; width: auto; /* Туурасы автоматтык */
+        margin: 0 10px; /* Капталдарынан боштук */
+        background: var(--bg-white); /* Ак фон */
+        border: 1px solid var(--border-color);
+        border-top: none;
+        border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);
+        box-shadow: var(--shadow-lg); z-index: 999;
+    }
+    nav.main-navigation.is-active { display: block; }
+    nav.main-navigation ul { flex-direction: column; padding: 10px 0; gap: 0; }
+    nav.main-navigation ul li { margin: 0; width: 100%; }
+    nav.main-navigation ul li a {
+        display: block; padding: 12px 20px; border-bottom: 1px solid var(--border-color);
+        color: var(--text-dark); /* Текст кара */
+        font-weight: 500;
+    }
+    nav.main-navigation ul li:last-child a { border-bottom: none; }
+    nav.main-navigation ul li a.active, nav.main-navigation ul li a:hover {
+        background-color: var(--very-light-purple); color: var(--primary-purple);
+        border-bottom-color: var(--border-color); /* Астындагы сызыктын түсү өзгөрбөйт */
+    }
+    nav.main-navigation ul li a::after { display: none; }
+
+    .burger-menu-button { display: flex; background: none; border: none; color: var(--bg-white); font-size: 1.8rem; cursor: pointer; padding: 5px; z-index: 1001; }
+    .header-actions .search-form { display: none; }
+    .header-actions .auth-links { display: none; }
+
+    .hero-section { padding: 60px 0 70px 0; }
+    .hero-section h1 { font-size: 2.5rem; }
+    .hero-section p.subtitle { font-size: 1.15rem; }
+    h1.section-title, h2.section-title { font-size: 1.8rem; }
+    .section-title-container { flex-direction: column; align-items: center; text-align: center; }
+    .section-title-container h1.section-title::after,
+    .section-title-container h2.section-title::after { left: 50%; transform: translateX(-50%); }
+    .category-filters { justify-content: center; }
+
+    .item-list { grid-template-columns: 1fr; gap: 25px; }
+    .detail-page-header { padding: 30px; }
+    .detail-page-header .profile-img, .detail-page-header .course-header-image { width: 140px; height: 140px; font-size: 4.5rem; }
+    .detail-page-header-content h1 { font-size: 2rem; }
+    .detail-section { padding: 30px; }
+    .footer-container { grid-template-columns: 1fr; text-align: center; }
+    .footer-section h4::after { left: 50%; transform: translateX(-50%); }
+    .get-in-touch p, .social-icons { justify-content: center; }
+}
+
+.item-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Картанын минималдуу туурасы */
+    gap: 30px; /
+}
+
+.item-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg); /* Көбүрөөк тегеректелген бурчтар */
+    box-shadow: var(--shadow-md); /* Көлөкө бир аз күчөтүлдү */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform var(--transition-ease), box-shadow var(--transition-ease);
+}
+
+.item-card:hover {
+    transform: translateY(-7px); /* Бир аз көбүрөөк көтөрүлөт */
+    box-shadow: var(--shadow-lg); /* Көлөкө дагы күчөйт */
+}
+
+/* Сүрөт үчүн контейнер */
+.item-card-image-link { /* <a> теги */
+    display: block;
+    text-decoration: none;
+}
+
+.item-card-image-placeholder {
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 пропорциясы үчүн (9 / 16 * 100). Керегине жараша өзгөртүңүз */
+    position: relative;
+    background-color: var(--very-light-purple); /* Сүрөт жок болсо, ачык фиолет фон */
+    overflow: hidden;
+    /* Картанын үстүнкү бурчтарын тегеректөө үчүн бул кереги жок, анткени .item-card'да overflow:hidden бар */
+}
+
+.item-card-image-placeholder img,
+.item-card-image-placeholder .placeholder-initial {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* Жылмакай чоңоюу */
+}
+.item-card:hover .item-card-image-placeholder img {
+    transform: scale(1.05); /* Курсорду алып барганда сүрөт бир аз чоңоёт */
+}
+
+.item-card-image-placeholder .placeholder-initial {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    color: var(--light-purple); /* Placeholder тамгасынын түсү */
+    font-weight: 800;
+    background-color: var(--very-light-purple); /* Placeholder үчүн фон */
+}
+
+/* Картанын мазмуну */
+.item-card-content {
+    padding: 20px 25px; /* Ички боштуктар */
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.item-card-content h2 { /* Курстун/Ментордун аталышы */
+    font-size: 1.25rem; /* Бир аз чоңойтулду */
+    font-weight: 700; /* Калың */
+    color: var(--text-dark);
+    margin-top: 0;
+    margin-bottom: 8px;
+    line-height: 1.35;
+}
+.item-card-content h2 a { color: inherit; }
+.item-card-content h2 a:hover { color: var(--primary-purple); }
+
+/* Категория белгиси үчүн стиль */
+.meta-info.category-badge {
+    margin-bottom: 10px;
+}
+.meta-info.category-badge a {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: var(--border-radius-sm);
+    background-color: var(--very-light-purple); /* Ачык фиолет фон */
+    color: var(--primary-purple); /* Фиолет текст */
+    font-size: 0.75rem; /* Кичирээк шрифт */
+    font-weight: 600;
+    text-transform: uppercase; /* Чоң тамгалар */
+    letter-spacing: 0.5px;
+    transition: background-color var(--transition-ease), color var(--transition-ease);
+}
+.meta-info.category-badge a:hover {
+    background-color: var(--primary-purple);
+    color: var(--bg-white);
+    text-decoration: none;
+}
+
+/* Мета-маалымат (ментор, узактыгы, старт датасы) */
+.item-card-content p.meta-info {
+    font-size: 0.85rem; /* Кичирээк */
+    color: var(--text-light); /* Ачыгыраак боз текст */
+    margin-bottom: 6px;
+    line-height: 1.5;
+}
+.item-card-content p.meta-info a { /* Ментордун атына шилтеме үчүн */
+    color: var(--text-medium);
+    font-weight: 500;
+}
+.item-card-content p.meta-info a:hover { color: var(--primary-purple); }
+
+
+/* Кыскача сүрөттөлүшү */
+.item-card-content p.description {
+    font-size: 0.9rem;
+    color: var(--text-medium);
+    margin-bottom: 15px;
+    flex-grow: 1; /* Калган боштукту ээлейт */
+    line-height: 1.6;
+   
+}
+
+/* Картанын аягы (баасы жана баскыч) */
+.item-card-footer {
+    padding: 20px 25px; /* Ички боштуктар */
+    margin-top: auto; /* Элементти картанын астына түшүрөт */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border-color); /* Мазмун менен бөлүүчү сызык */
+}
+
+.item-card-footer .price {
+    font-size: 1.3rem; /* Баасы чоңураак */
+    font-weight: 700;
+    color: var(--primary-purple); /* Баасы фиолет */
+}
+
+.item-card-footer .btn.btn-primary { /* Эгер primary колдонсок */
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: none; /* Чоң тамгаларды алып салабыз */
+    letter-spacing: 0;
+    background: linear-gradient(95deg, var(--primary-purple) 0%, var(--dark-purple) 100%);
+}
+.item-card-footer .btn.btn-primary:hover {
+     background: linear-gradient(95deg, var(--dark-purple) 0%, var(--primary-purple) 100%);
+}
+
+.contact-hero-section {
+    /* background: var(--primary-purple); /* Фиолет фон, эгер кааласаңыз */
+    background: linear-gradient(90deg, var(--gradient-start) 0%, var(--gradient-end) 100%); /* Градиент */
+    color: var(--bg-white);
+    padding: 70px 0; /* Бир аз көбүрөөк боштук */
+    text-align: center;
+}
+.contact-hero-section h1 {
+    font-size: 2.8rem;
+    font-weight: 800; /* Калыңыраак */
+    margin-bottom: 15px;
+    color: var(--bg-white);
+}
+.contact-hero-section p {
+    font-size: 1.15rem; /* Бир аз чоңойтулду */
+    opacity: 0.9;
+    margin-bottom: 0;
+    max-width: 600px; /* Узун тексттер үчүн */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.contact-details-section {
+    background-color: var(--bg-white); /* Эми фон ак, карталар бир аз боз болот */
+    padding: 70px 0;
+}
+
+.contact-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* <<< 4 КОЛОНКА (бул мурунтан эле ошондой) */
+    gap: 25px;
+}
+
+.contact-card {
+    background-color: var(--very-light-purple); /* Картанын фону абдан ачык фиолет */
+    padding: 35px 30px; /* Ички боштук көбөйдү */
+    border-radius: var(--border-radius-lg); /* Көбүрөөк тегеректелген */
+    box-shadow: var(--shadow-sm); /* Жумшак көлөкө */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform var(--transition-ease), box-shadow var(--transition-ease);
+}
+.contact-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+}
+
+.contact-card-icon {
+    width: 60px; /* Өлчөмү өзгөрдү */
+    height: 60px;
+    border-radius: 50%;
+    background-color: var(--bg-white); /* Иконканын фону ак */
+    color: var(--primary-purple); /* Иконканын түсү фиолет */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px; /* Астынан боштук азайды */
+    box-shadow: var(--shadow-sm); /* Иконкага да көлөкө */
+    transition: background-color var(--transition-ease), color var(--transition-ease);
+}
+.contact-card:hover .contact-card-icon {
+    background-color: var(--primary-purple);
+    color: var(--bg-white);
+}
+.contact-card-icon svg {
+    width: 28px; /* SVG иконкасынын өлчөмү */
+    height: 28px;
+}
+
+.contact-card h3 {
+    font-size: 1.2rem; /* Бир аз кичирейди */
+    font-weight: 600;
+    color: var(--text-dark); /* Текст кара */
+    margin-bottom: 8px;
+}
+
+.contact-card p {
+    font-size: 0.95rem;
+    color: var(--text-medium); /* Текст орточо боз */
+    line-height: 1.6;
+    margin-bottom: 5px;
+}
+.contact-card p a {
+    color: var(--text-medium);
+    word-break: break-word; /* Узун email/шилтемелер үчүн */
+}
+.contact-card p a:hover {
+    color: var(--primary-purple);
+}
+.contact-card p.working-hours {
+    font-size: 0.8rem;
+    color: var(--text-light); /* Ачык боз текст */
+    margin-top: 8px;
+}
+
+.social-icons-contact {
+    display: flex;
+    justify-content: center;
+    gap: 12px; /* Аралыгы азайды */
+    margin-top: 10px;
+}
+.social-icons-contact a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px; /* Өлчөмү азайды */
+    height: 38px;
+    border-radius: 50%;
+    background-color: transparent; /* Фон жок */
+    color: var(--text-medium); /* Иконкалардын түсү боз */
+    border: 1px solid var(--border-color); /* Чек сызыгы */
+    font-size: 1rem; /* Тексттик иконкалар үчүн (IG, FB) */
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color var(--transition-ease), color var(--transition-ease), border-color var(--transition-ease);
+}
+.social-icons-contact a:hover {
+    background-color: var(--primary-purple);
+    color: var(--bg-white);
+    border-color: var(--primary-purple);
+}
+
+/* --- Байланыш Формасы үчүн Стилдер --- */
+.contact-form-section {
+    background-color: var(--bg-white);
+    padding: 50px 40px; /* Көбүрөөк ички боштук */
+    border-radius: var(--border-radius-lg);
+    margin-top: 60px; /* Карталардан кийин чоңураак боштук */
+    box-shadow: var(--shadow-md);
+}
+.contact-form-section h2.section-title { /* Форманын аталышы */
+    text-align: center;
+    margin-bottom: 35px;
+    border-bottom-color: var(--primary-purple); /* Астындагы сызыктын түсү */
+}
+.contact-form-section h2.section-title::after { /* Астындагы сызыктын узундугу */
+    width: 100px;
+}
+
+.form-row { /* Форма талааларынын катары */
+    display: grid;
+    grid-template-columns: 4fr; /* Демейки бир колонка */
+    gap: 25px; /* Аралыгы */
+    margin-bottom: 25px;
+}
+@media (min-width: 768px) { /* Чоң экранда эки колонка */
+    .form-row {
+        grid-template-columns: 4fr 1fr;
+    }
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px; /* Аралыгы көбөйдү */
+    font-weight: 500;
+    color: var(--text-medium); /* Түсү өзгөрдү */
+    font-size: 0.9rem;
+}
+.form-control {
+    width: 100%;
+    padding: 14px 18px; /* Ички боштук көбөйдү */
+    background-color: var(--input-bg); /* Ачык боз фон */
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md); /* Көбүрөөк тегеректелген */
+    color: var(--text-dark);
+    font-family: var(--font-main);
+    font-size: 1rem;
+    transition: border-color var(--transition-ease), box-shadow var(--transition-ease);
+}
+.form-control:focus {
+    border-color: var(--primary-purple);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2); /* Фиолет көлөкө */
+}
+.form-control::placeholder { color: var(--text-light); }
+textarea.form-control { resize: vertical; min-height: 120px; }
+
+.form-actions { /* Баскыч үчүн контейнер */
+    text-align: center; /* Баскычты ортого жайгаштыруу */
+    margin-top: 30px;
+}
+
+.item-list {
+    list-style: none;
+    display: grid;
+    /* Чоң экранда 4 колонка, кичирээктерде азаят */
+    grid-template-columns: repeat(4, 1fr); /* <<< 4 КОЛОНКА */
+    gap: 25px; /* Аралыгын тууралаңыз (мис., 25px же 30px) */
+}
+
+.mentor-home-list { /* Эгер бул item-list'тен айырмаланса, аны да өзгөртүңүз */
+    /* grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); */
+    grid-template-columns: repeat(4, 1fr); /* <<< 4 КОЛОНКА */
+    gap: 25px;
+}
+
+/* --- Пикирлер (Testimonials) Секциясы --- */
+.testimonials-list {
+    /* grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Пикирлер бир аз кененирээк болгону жакшы, 3 же 2 колонка болушу мүмкүн */
+    /* Эгер так 4 кааласаңыз: */
+    /* grid-template-columns: repeat(4, 1fr); */
+    gap: 30px;
+}
+
+
+/* --- "Биздин Негизги Принциптер" Секциясы (home.html) --- */
+.principles-grid {
+    display: grid;
+    /* grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); */
+    grid-template-columns: repeat(3, 1fr); /* Бул жерде 3 колонка жакшыраак көрүнөт, бирок 4 кылсаңыз да болот */
+    /* Эгер так 4 кааласаңыз: */
+    /* grid-template-columns: repeat(4, 1fr); */
+    gap: 35px;
+}
+
+/* --- "Эмне үчүн бизди тандашат?" (home.html) --- */
+.feature-list {
+    display: grid;
+    /* grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); */
+    grid-template-columns: repeat(3, 1fr); /* Бул жерде да 3 колонка жакшыраак */
+    /* Эгер так 4 кааласаңыз: */
+    /* grid-template-columns: repeat(4, 1fr); */
+    gap: 30px;
+    text-align: left; /* Эгер мурун center болсо */
+}
+
+
+/* --- "Биз менен байланышыңыз" Бетиндеги Карталар --- */
+.contact-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* <<< 4 КОЛОНКА (бул мурунтан эле ошондой) */
+    gap: 25px;
+}
+
+
+
+/* Мисалы, Планшеттер үчүн (1024px чейин) – 2 же 3 колонка */
+@media (max-width: 1024px) {
+    .item-list,
+    .mentor-home-list {
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); /* Же так 3 же 2: repeat(3, 1fr); */
+    }
+    .testimonials-list {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Же так 2: repeat(2, 1fr); */
+    }
+    .principles-grid,
+    .feature-list {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Же так 2: repeat(2, 1fr); */
+    }
+    .contact-cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Телефондор үчүн (768px чейин) – 1 же 2 колонка */
+@media (max-width: 768px) {
+    .item-list,
+    .mentor-home-list,
+    .testimonials-list,
+    .principles-grid,
+    .feature-list {
+        grid-template-columns: 1fr; /* Баары бир колонкадан */
+        /* Же кээ бирлерин 2ден калтырсаңыз болот, эгер батса:
+           grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        */
+    }
+    .contact-cards-grid {
+        grid-template-columns: 1fr; /* Же repeat(2, 1fr) эгер батса */
+    }
+}
+
+/* Эң кичинекей экрандар үчүн (480px чейин) – сөзсүз 1 колонка */
+@media (max-width: 480px) {
+    .item-list,
+    .mentor-home-list,
+    .testimonials-list,
+    .principles-grid,
+    .feature-list,
+    .contact-cards-grid {
+        grid-template-columns: 1fr;
+    }
+    /* Бул жерде карталардын ички боштуктарын, шрифт өлчөмдөрүн дагы кичирейтсе болот */
+}
+/* --- Социалдык иконкалар үчүн оңдолгон стилдер --- */
+
+/* Жалпы шилтеме стили (.social-icons-contact .social-icon-link)
+   Эгер бул эреже мурдатан бар болсо, аны төмөнкүдөй өзгөртүңүз же толуктаңыз. */
+   .social-icons-contact .social-icon-link {
+    display: inline-block;
+    font-size: 1.5rem; /* Иконкалардын сырткы өлчөмү */
+    margin: 0 8px;
+    /* Демейки түс ар бир иконкага өзүнчө берилет (төмөндө).
+       Эгер мурда бул жерде 'color: #495057;' сыяктуу жалпы түс болсо, аны алып салыңыз. */
+    transition: transform 0.2s ease;
+    /* Эгер мурда бул жерде 'transition' касиетинде 'color' болсо,
+       аны алып салыңыз (мисалы, 'transform 0.2s ease, color 0.2s ease' ордуна). */
+}
+
+.social-icons-contact .social-icon-link svg {
+    width: 24px; /* SVG иконкаларынын өлчөмү */
+    height: 24px;
+    display: block; /* SVG элементтерин туура жайгаштырууга жардам берет */
+}
+
+.social-icons-contact .social-icon-link:hover {
+    transform: scale(1.2);
+    /* Кааласаңыз, ховерде кошумча эффект кошсоңуз болот, мисалы:
+       filter: brightness(0.9); (бир аз күңүрттөтүү)
+    */
+}
+
+/* Социалдык иконкалардын чыныгы (демейки) түстөрү */
+.social-icons-contact .instagram-icon { color: #E1306C; }
+.social-icons-contact .facebook-icon { color: #1877F2; }
+.social-icons-contact .telegram-icon { color: #0088cc; }
+.social-icons-contact .whatsapp-icon { color: #25D366; }
+
+/*
+   ЭСКЕРТҮҮ: Мурунку CSS'теги төмөнкүдөй :hover эрежелери эми КЕРЕК ЭМЕС.
+   Аларды CSS файлыңыздан алып салыңыз, анткени түстөр эми демейки болуп калды:
+
+   .social-icons-contact .instagram-icon:hover { color: #E1306C; } <--- БУЛ СЫЯКТУУЛАРДЫ АЛЫП САЛЫҢЫЗ
+   .social-icons-contact .facebook-icon:hover { color: #1877F2; } <--- БУЛ СЫЯКТУУЛАРДЫ АЛЫП САЛЫҢЫЗ
+   .social-icons-contact .telegram-icon:hover { color: #0088cc; } <--- БУЛ СЫЯКТУУЛАРДЫ АЛЫП САЛЫҢЫЗ
+   .social-icons-contact .whatsapp-icon:hover { color: #25D366; } <--- БУЛ СЫЯКТУУЛАРДЫ АЛЫП САЛЫҢЫЗ
+*/
+
+/* --- Социалдык иконкалар үчүн стилдердин аягы --- */
+
+
+/* Төмөндө сиз берген форма стилдери өзгөрүүсүз уланат */
+.contact-form-section {
+    background-color: #f8f9fa;
+    padding: 2.5rem; /* Паддинг көбөйтүлдү */
+    border-radius: .5rem;
+    margin-top: 2rem;
+    border: 1px solid #e9ecef;
+}
+.contact-form-section .section-title {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #343a40;
+    font-size: 1.8rem;
+}
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem; /* Талаалардын ортосундагы аралык */
+    margin-bottom: 1.5rem;
+}
+.form-group {
+    flex: 1 1 calc(50% - 0.75rem); /* Эки талааны бир катарга жайгаштыруу */
+    min-width: 250px; /* Кичине экрандар үчүн */
+    margin-bottom: 1rem; /* Эгер form-row колдонулбаса */
+}
+.form-group label {
+    display: block;
+    margin-bottom: .5rem;
+    font-weight: 500;
+    color: #495057;
+}
+.form-control {
+    display: block;
+    width: 100%;
+    padding: .75rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.form-control:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 .2rem rgba(0,123,255,.25);
+}
+.form-actions {
+    text-align: center; /* Баскычты ортого жайгаштыруу */
+    margin-top: 1.5rem;
+}
+.btn {
+    display: inline-block;
+    font-weight: 400;
+    color: #fff;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    user-select: none;
+    background-color: #28a745; /* Негизги жашыл түс */
+    border: 1px solid #28a745;
+    padding: .75rem 1.5rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.btn:hover {
+    background-color: #218838; /* Жашылдын кочкул түсү */
+    border-color: #1e7e34;
+}
+/* Эгер btn-primary жана btn-cta башкача болсо: */
+
+.btn-cta {
+    font-weight: 500; /* Бир аз калыңыраак шрифт */
+}
+
+
+/* --- "Эмне үчүн бизди тандашат?" же "Биздин Принциптер/Миссия" Секциясы --- */
+.feature-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 270px), 1fr));
+    gap: 40px; /* Горизонталдык жана вертикалдык аралыкты көбөйттүк */
+                /* Эгер горизонталдык менен вертикалдыкты өз-өзүнчө кааласаңыз:
+                   column-gap: 30px;
+                   row-gap: 50px; // Мисалы
+                */
+}
+
+.feature-item {
+    background-color: var(--bg-light-gray); /* Демейки фон (үстүңкү катар үчүн) */
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    padding: 30px 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform var(--transition-ease), box-shadow var(--transition-ease), background-color var(--transition-ease);
+    min-height: 210px;
+}
+
+.feature-item:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+}
+
+/*
+   Атайын түс берүү үчүн:
+   Эгер 6 элемент болсо жана 3 колонкалуу жайгашууда (992px+ экрандарда)
+   акыркы 3 элементке (4, 5, 6) башка фон беребиз.
+*/
+@media (min-width: 992px) { /* 3 колонка болжолдонгондо */
+    .feature-list .feature-item:nth-child(n+4) { /* 4-чү элементтен баштап баары (эгер 6 элемент болсо, бул 4, 5, 6 болот) */
+        background-color: var(--very-light-purple);
+    }
+    .feature-list .feature-item:nth-child(n+4) .feature-item-icon {
+        color: var(--primary-purple); /* Астыңкы катардагы иконкалардын түсү */
+    }
+}
+
+/*
+   Эгер 2 колонкалуу жайгашууда (мисалы, 768px - 991px) да акыркы элементтерге башка түс бергиңиз келсе:
+   Бул жерде канчанчы элементтен баштап "астыңкы катар" деп эсептээриңизди чечишиңиз керек.
+   Мисалы, эгер 6 элемент 2 колонкага жайгашса, 3 катар болот. Балким акыркы эки катарга (3,4,5,6 элементтер) түс бергиңиз келет.
+*/
+@media (min-width: 768px) and (max-width: 991.98px) {
+    /* Мисал: Эгер 6 элемент болсо, 3чү элементтен баштап (б.а. 2чи жана 3чү катарлар) */
+    .feature-list .feature-item:nth-child(n+3) {
+        background-color: var(--very-light-purple);
+    }
+    .feature-list .feature-item:nth-child(n+3) .feature-item-icon {
+        color: var(--primary-purple);
+    }
+}
+
+/*
+   1 колонкалуу жайгашууда (768px ылдый) бардыгы бирдей фондо калабы же
+   акыркы N элементке башка түс бересизби, ошону чечиңиз.
+   Эгер бардыгы бирдей фондо калса, бул үчүн кошумча эреже кереги жок.
+*/
+
+
+.feature-item-icon {
+    font-size: 2.5rem;
+    color: var(--text-dark); /* Демейки түс, @media сурамдары менен өзгөртүлөт */
+    margin-bottom: 20px;
+    line-height: 1;
+}
+
+.feature-item h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 12px;
+    margin-top: 0;
+}
+
+.feature-item p {
+    font-size: 0.95rem;
+    color: var(--text-medium);
+    line-height: 1.65;
+    margin-bottom: 0;
+    max-width: 300px;
+}
+/* static/css/main.css */
+
+/* --- Профиль Бети үчүн Жалпы Стилдер --- */
+.profile-page-section {
+    background-color: var(--bg-light-gray, #F9FAFB); /* Ачык боз фон */
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.profile-page-section .card {
+    border: none; /* Картанын чектерин алып салабыз, көлөкө жетиштүү */
+    border-radius: var(--border-radius-lg, 16px); /* Көбүрөөк тегеректелген бурчтар */
+}
+
+
+/* Профиль бетинин негизги секциясы */
+.profile-page-section {
+    background-color: var(--bg-light-gray, #f4f6f9); /* Ачык, таза фон */
+    padding-top: 50px;
+    padding-bottom: 80px; /* Астынан көбүрөөк боштук */
+}
+
+/* Профиль картасы */
+.profile-card {
+    background-color: var(--bg-white, #ffffff);
+    border-radius: var(--border-radius-xl, 20px); /* Дагы да тегеректелген */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); /* Жумшак, бирок көрүнүктүү көлөкө */
+    overflow: hidden; /* Градиенттин сыртка чыкпашы үчүн */
+}
+
+/* Профильдин башкы бөлүгү (сүрөт, ат) */
+.profile-header {
+    background: linear-gradient(135deg, var(--primary-purple, #7c3aed) 0%, var(--dark-purple, #5b21b6) 100%);
+    color: var(--bg-white, #ffffff);
+    padding: 40px 30px; /* Ички боштуктар */
+    text-align: center;
+    position: relative; /* Эгер абсолюттук жайгашкан элементтер болсо */
+}
+
+.profile-picture-wrapper {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+.profile-picture {
+    width: 160px; /* Бир аз чоңойтулду */
+    height: 160px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 6px solid rgba(255, 255, 255, 0.8); /* Жарым тунук ак чек */
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+    transition: transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.profile-picture:hover {
+    transform: scale(1.08) rotate(2deg); /* Бир аз кыйшаюу эффекти менен */
+}
+
+.profile-header h4 {
+    margin-top: 10px;
+    margin-bottom: 8px;
+    font-size: 1.75rem; /* Аты үчүн чоңураак шрифт */
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.profile-header p {
+    font-size: 0.95rem;
+    opacity: 0.85;
+    margin-bottom: 4px;
+    display: flex; /* Иконка менен текстти бир катарга жайгаштыруу үчүн */
+    align-items: center;
+    justify-content: center; /* Ортого жылдыруу */
+}
+
+.profile-header p i.fa-fw {
+    margin-right: 8px; /* Иконка менен тексттин ортосундагы боштук */
+    font-size: 1em; /* Иконканын өлчөмү текстке жараша */
+    opacity: 0.9;
+}
+
+/* Форма жайгашкан контейнер */
+.profile-form-container {
+    padding: 35px 40px; /* Көбүрөөк ички боштук */
+}
+
+.profile-form-container legend {
+    font-size: 1.35rem; /* Бир аз чоңойтулду */
+    font-weight: 600;
+    color: var(--text-dark, #333); /* Карараак түс */
+    padding-bottom: 12px;
+    margin-bottom: 30px;
+    border-bottom: 2px solid var(--primary-purple, #7c3aed);
+    /* text-transform: uppercase; */
+    letter-spacing: 0.3px;
+}
+
+/* Форма талаалары үчүн жалпы стилдер */
+.profile-form-container .form-control,
+.profile-form-container .form-select { /* Эгер select колдонсоңуз */
+    border-radius: var(--border-radius-md, 8px);
+    border: 1px solid var(--border-color, #d1d5db);
+    padding: 0.8rem 1.1rem;
+    font-size: 0.95rem;
+    box-shadow: none; /* Демейки көлөкөнү алып салабыз */
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.profile-form-container .form-control:focus {
+    border-color: var(--primary-purple, #7c3aed);
+    box-shadow: 0 0 0 0.25rem rgba(var(--rgb-primary-purple, 124, 58, 237), 0.2); /* RGB форматында түс, эгер бар болсо */
+    outline: 0;
+}
+
+/* Файл жүктөө талаасы */
+/* Crispy Forms менен бул татаалыраак болушу мүмкүн, бирок аракет кылып көрөлү */
+/* Эгер кол менен чыгарсаңыз, бул жакшы иштейт */
+
+    /* Демейки көрүнүшүн жашырабыз */
+
+
+.current-image-text {
+    font-size: 0.8rem;
+    color: var(--text-light, #6c757d);
+    margin-top: 5px;
+    display: block;
+}
+.current-image-text a {
+    color: var(--primary-purple);
+    text-decoration: none;
+}
+.current-image-text a:hover {
+    text-decoration: underline;
+}
+
+
+/* Сактоо баскычы */
+.btn-save-profile {
+    background: linear-gradient(45deg, var(--primary-purple, #7c3aed), var(--accent-pink, #ec4899)); /* Башка градиент */
+    border: none;
+    padding: 14px 35px; /* Чоңураак */
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--bg-white, #ffffff);
+    border-radius: 50px; /* Толук тегеректелген бурчтар */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-save-profile:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 10px 20px rgba(var(--rgb-primary-purple, 124, 58, 237), 0.25);
+    color: var(--bg-white, #ffffff); /* Тексттин түсүн дагы бир жолу тактоо */
+}
+.btn-save-profile:active {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 10px rgba(var(--rgb-primary-purple, 124, 58, 237), 0.2);
+}
+.btn-save-profile i {
+    margin-right: 8px;
+}
+
+/* Чыгуу баскычы */
+.profile-form-container .btn-outline-danger {
+    border-radius: 50px;
+    padding: 8px 20px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+.profile-form-container .btn-outline-danger:hover {
+    background-color: var(--bs-danger); /* Bootstrap'тун кызыл түсү */
+    color: var(--bg-white);
+}
+
+/* Адаптивдүүлүк */
+@media (max-width: 767px) {
+    .profile-header { padding: 30px 20px; }
+    .profile-picture { width: 120px; height: 120px; }
+    .profile-header h4 { font-size: 1.5rem; }
+    .profile-form-container { padding: 25px 20px; }
+    .profile-form-container legend { font-size: 1.2rem; margin-bottom: 20px; }
+}

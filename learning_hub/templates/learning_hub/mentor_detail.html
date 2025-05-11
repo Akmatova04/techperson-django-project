@@ -1,0 +1,121 @@
+{# learning_hub/templates/learning_hub/mentor_detail.html #}
+{% extends "learning_hub/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %} {# Эгер crispy колдонсоңуз #}
+
+{% block title %}{{ mentor.full_name }} - Менторлор - TechPerson{% endblock title %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+<style>
+   
+    .reviews-section { margin-top: 40px; padding-top: 30px; border-top: 1px solid #eee; }
+    .review-item { 
+        border: 1px solid #e9ecef; 
+        padding: 20px; 
+        margin-bottom: 20px; 
+        border-radius: 8px;
+        background-color: #fff;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .review-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .reviewer-name { font-weight: 600; color: var(--text-dark); }
+    .review-date { font-size: 0.85rem; color: var(--text-light); }
+    .review-rating .fa-star { color: #ffc107; /* Сары жылдызчалар */ }
+    .review-rating .fa-star.empty { color: #e0e0e0; /* Бош жылдызчалар */ }
+    .review-comment { line-height: 1.7; color: var(--text-medium); }
+    .add-review-form legend { font-size: 1.5rem; font-weight: 600; margin-bottom: 20px; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-4 mb-4 mb-lg-0">
+            <div class="mentor-profile-card text-center p-4 sticky-sidebar">
+                {% if mentor.photo %}
+                    <img src="{{ mentor.photo.url }}" alt="{{ mentor.full_name }}" class="img-fluid rounded-circle mx-auto d-block mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                {% else %}
+                    <img src="{% static 'images/default_avatar.png' %}" alt="Демейки аватар" class="img-fluid rounded-circle mx-auto d-block mb-3" style="width: 150px; height: 150px; object-fit: cover; background-color: #eee;">
+                {% endif %}
+                <h2 class="h4 fw-bold mb-1">{{ mentor.full_name }}</h2>
+                <p class="text-muted mb-2">{{ mentor.specialization }}</p>
+                <p class="small">{{ mentor.bio|truncatewords:25|linebreaksbr }}</p>
+                {# Социалдык тармактар ж.б. #}
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="mentor-details-content">
+                <h3><i class="fas fa-graduation-cap text-primary me-2"></i>Берген курстары:</h3>
+                {% if courses_taught %}
+                    <div class="list-group list-group-flush mb-4">
+                        {% for course in courses_taught %}
+                            <a href="{% url 'learning_hub:course_detail' course.id %}" class="list-group-item list-group-item-action">
+                                {{ course.title }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p>Бул ментор азырынча курс бере элек.</p>
+                {% endif %}
+
+                {# --- ПИКИРЛЕР БӨЛҮГҮ --- #}
+                <section class="reviews-section">
+                    <h3><i class="fas fa-comments text-primary me-2"></i>Пикирлер ({{ reviews.count }})</h3>
+                    {% if reviews %}
+                        {% for review in reviews %}
+                            <div class="review-item">
+                                <div class="review-header">
+                                    <span class="reviewer-name">{{ review.reviewer.username|default:review.reviewer_name|default:"Аноним" }}</span>
+                                    <span class="review-date text-muted"><small>{{ review.created_at|date:"d-M, Y H:i" }}</small></span>
+                                </div>
+                                <div class="review-rating mb-2">
+                                    {% for i in "12345" %}
+                                        {% if i|add:"0" <= review.rating %}
+                                            <i class="fas fa-star"></i>
+                                        {% else %}
+                                            <i class="far fa-star"></i> {# Же fas fa-star empty #}
+                                        {% endif %}
+                                    {% endfor %}
+                                    ({{ review.rating }}/5)
+                                </div>
+                                <p class="review-comment">{{ review.comment|linebreaksbr }}</p>
+                            </div>
+                        {% empty %}
+                            <p>Бул менторго азырынча пикир калтырыла элек.</p>
+                        {% endfor %}
+                    {% else %}
+                        <p>Бул менторго азырынча пикир калтырыла элек.</p>
+                    {% endif %}
+                </section>
+                {# --- /ПИКИРЛЕР БӨЛҮГҮ --- #}
+
+                {# --- ПИКИР КАЛТЫРУУ ФОРМАСЫ --- #}
+                {% if user.is_authenticated and can_add_review %} {# can_add_review'ду view'дан беребиз #}
+                    <section class="add-review-form mt-4 pt-4 border-top">
+                        <h3><i class="fas fa-pencil-alt text-primary me-2"></i>Пикир калтыруу</h3>
+                        {% if messages %} {# Формадан келген каталар үчүн #}
+                            {% for message in messages %}
+                                {% if "error" in message.tags and form.errors %} {# Эгер ката формага тиешелүү болсо #}
+                                <div class="alert alert-danger">{{ message }}</div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        <form method="post" action="{% url 'learning_hub:add_mentor_review' mentor_id=mentor.id %}">
+                            {% csrf_token %}
+                            {{ review_form.rating|as_crispy_field }}
+                            {{ review_form.comment|as_crispy_field }}
+                            <button type="submit" class="btn btn-primary mt-3">Жөнөтүү</button>
+                        </form>
+                    </section>
+                {% elif not user.is_authenticated %}
+                    <p class="mt-4 pt-4 border-top">Пикир калтыруу үчүн, сураныч, <a href="{% url 'users:request_otp' %}?next={{ request.path }}">системага кириңиз</a>.</p>
+                {% endif %}
+                {# --- /ПИКИР КАЛТЫРУУ ФОРМАСЫ --- #}
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

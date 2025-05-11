@@ -1,0 +1,285 @@
+{% extends "learning_hub/base.html" %} {# Сиздин негизги base.html'иңизге жол #}
+{% load static %}
+
+{% block title %}Профилди өзгөртүү - {{ user.username|capfirst }}{% endblock title %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+<style>
+    body {
+        background-color: var(--bg-light-gray, #f4f7f6); /* Ачык боз фон */
+        font-family: var(--font-main, 'Inter', sans-serif);
+    }
+    .profile-edit-page-wrapper {
+        padding: 40px 0;
+    }
+    .profile-edit-container {
+        max-width: 720px; /* Бир аз кененирээк */
+        margin: 0 auto;
+        background-color: var(--bg-white, #ffffff);
+        padding: 30px 40px; /* Ички боштуктар */
+        border-radius: var(--border-radius-lg, 12px);
+        box-shadow: 0 6px 25px rgba(0,0,0,0.08);
+    }
+    .profile-edit-header h3 {
+        text-align: left; /* Аталыш сол жакта */
+        font-size: 1.6rem;
+        font-weight: 600;
+        color: var(--text-dark, #212529);
+        margin-bottom: 30px; /* Аватардан мурун боштук */
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--border-color, #e0e0e0);
+    }
+    .avatar-section {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+    .avatar-upload-container {
+        position: relative;
+        display: inline-block;
+    }
+    .profile-avatar-img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid var(--very-light-purple, #e9d5ff); /* Ачык фиолет чек */
+    }
+    .avatar-edit-button {
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
+        background-color: var(--primary-purple, #7C3AED);
+        color: white;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        cursor: pointer;
+        border: 2px solid white;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+    .avatar-edit-button:hover {
+        background-color: var(--dark-purple, #6D28D9);
+        transform: scale(1.1);
+    }
+    .form-label-custom {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: var(--text-medium, #6c757d);
+        margin-bottom: 0.3rem;
+    }
+    .form-control-custom {
+        display: block;
+        width: 100%;
+        padding: 0.75rem 1rem; /* Бир аз чоңураак паддинг */
+        font-size: 0.9rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: var(--text-dark, #343a40);
+        background-color: var(--bg-white, #fff);
+        background-clip: padding-box;
+        border: 1px solid var(--border-color, #ced4da);
+        appearance: none;
+        border-radius: var(--border-radius-md, 8px); /* Көбүрөөк тегеректелген */
+        transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    }
+    .form-control-custom:focus {
+        color: var(--text-dark);
+        background-color: var(--bg-white);
+        border-color: var(--primary-purple);
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(var(--rgb-primary-purple, 124, 58, 237), 0.25); /* Фиолет көлөкө */
+    }
+    textarea.form-control-custom { min-height: 100px; }
+    .form-field-help-text { font-size: 0.75rem; color: #6c757d; display: block; margin-top: 0.25rem; }
+    .invalid-feedback { font-size: 0.8rem; color: var(--bs-danger, #dc3545); margin-top: 0.2rem; display: block; }
+
+    .profile-picture-controls { margin-top: 10px; }
+    .profile-picture-controls .current-image-text { font-size: 0.8rem; color: #6c757d; }
+    .profile-picture-controls .form-check-label { font-size: 0.8rem; }
+    
+    .btn-save-profile {
+        background-color: var(--primary-purple, #7C3AED);
+        border-color: var(--primary-purple, #7C3AED);
+        color: white;
+        padding: 0.65rem 1.8rem;
+        font-size: 0.95rem;
+        font-weight: 500;
+        border-radius: var(--border-radius-md, 8px);
+        transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+    .btn-save-profile:hover {
+        background-color: var(--dark-purple, #6D28D9);
+        border-color: var(--dark-purple, #6D28D9);
+        color: white;
+        transform: translateY(-1px);
+    }
+    .profile-actions-bottom { /* "Артка" жана "Чыгуу" үчүн контейнер */
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid var(--border-color, #e0e0e0);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .btn-link-custom { font-size: 0.9rem; font-weight: 500; }
+    .btn-link-custom.text-danger:hover { color: #a71d2a !important; }
+</style>
+{% endblock extra_head %}
+
+{% block content_full_width %}
+<div class="profile-edit-page-wrapper">
+    <div class="profile-edit-container">
+        <div class="profile-edit-header">
+            <h3>Профилди өзгөртүү</h3>
+        </div>
+
+        <div class="avatar-section">
+            <div class="avatar-upload-container">
+                {% if profile.profile_picture and profile.profile_picture.url %}
+                    <img src="{{ profile.profile_picture.url }}" alt="Профиль сүрөтү" class="profile-avatar-img" id="avatarPreviewImage">
+                {% else %}
+                    <img src="{% static 'images/default_avatar.png' %}" alt="Демейки аватар" class="profile-avatar-img" id="avatarPreviewImage">
+                {% endif %}
+                {# Жашыруун input type="file" #}
+                <input type="file" name="{{ p_form.profile_picture.html_name }}" id="id_profile_picture" class="d-none" accept="image/*">
+                <label for="id_profile_picture" class="avatar-edit-button" title="Сүрөттү өзгөртүү">
+                    <i class="fas fa-pencil-alt"></i>
+                </label>
+            </div>
+        </div>
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show mb-4" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+            
+            {# --- Аккаунт маалыматы --- #}
+            {# username талаасы көбүнчө өзгөртүлбөйт, ошондуктан аны жөн эле көрсөтсөк болот, же read-only кылсак #}
+            <div class="mb-3">
+                <label class="form-label-custom">Колдонуучу аты (өзгөртүлбөйт)</label>
+                <input type="text" class="form-control-custom" value="{{ user.username }}" readonly disabled>
+                {% if u_form.username.help_text %}<small class="form-field-help-text">{{ u_form.username.help_text }}</small>{% endif %}
+            </div>
+            <div class="mb-3">
+                <label for="{{ u_form.email.id_for_label }}" class="form-label-custom">{{ u_form.email.label }}</label>
+                <input type="email" name="{{ u_form.email.html_name }}" value="{{ u_form.email.value|default:'' }}" class="form-control-custom {% if u_form.email.errors %}is-invalid{% endif %}" id="{{ u_form.email.id_for_label }}">
+                {% for error in u_form.email.errors %}<div class="invalid-feedback">{{ error }}</div>{% endfor %}
+            </div>
+
+            {# --- Профиль маалыматы --- #}
+            <div class="row mt-4">
+                <div class="col-md-6 mb-3">
+                    <label for="{{ p_form.first_name.id_for_label }}" class="form-label-custom">{{ p_form.first_name.label }}</label>
+                    <input type="text" name="{{ p_form.first_name.html_name }}" value="{{ p_form.first_name.value|default:'' }}" class="form-control-custom {% if p_form.first_name.errors %}is-invalid{% endif %}" id="{{ p_form.first_name.id_for_label }}">
+                    {% for error in p_form.first_name.errors %}<div class="invalid-feedback">{{ error }}</div>{% endfor %}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="{{ p_form.last_name.id_for_label }}" class="form-label-custom">{{ p_form.last_name.label }}</label>
+                    <input type="text" name="{{ p_form.last_name.html_name }}" value="{{ p_form.last_name.value|default:'' }}" class="form-control-custom {% if p_form.last_name.errors %}is-invalid{% endif %}" id="{{ p_form.last_name.id_for_label }}">
+                    {% for error in p_form.last_name.errors %}<div class="invalid-feedback">{{ error }}</div>{% endfor %}
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ p_form.bio.id_for_label }}" class="form-label-custom">{{ p_form.bio.label }}</label>
+                <textarea name="{{ p_form.bio.html_name }}" class="form-control-custom {% if p_form.bio.errors %}is-invalid{% endif %}" id="{{ p_form.bio.id_for_label }}" rows="3">{{ p_form.bio.value|default:'' }}</textarea>
+                {% for error in p_form.bio.errors %}<div class="invalid-feedback">{{ error }}</div>{% endfor %}
+            </div>
+            
+            <div class="mb-4">
+                <label for="{{ p_form.date_of_birth.id_for_label }}" class="form-label-custom">{{ p_form.date_of_birth.label }}</label>
+                <input type="date" name="{{ p_form.date_of_birth.html_name }}" value="{{ p_form.date_of_birth.value|default:''|date:'Y-m-d' }}" class="form-control-custom {% if p_form.date_of_birth.errors %}is-invalid{% endif %}" id="{{ p_form.date_of_birth.id_for_label }}">
+                {% for error in p_form.date_of_birth.errors %}<div class="invalid-feedback">{{ error }}</div>{% endfor %}
+            </div>
+            
+            {# Профиль сүрөтү талаасы (жашыруун input жогоруда avatar-edit-button менен байланышкан) #}
+            {# Бул жерде жөн гана учурдагы сүрөт жана тазалоо чекбоксу көрсөтүлөт #}
+             {% if p_form.profile_picture.field.widget.template_name == 'django/forms/widgets/clearable_file_input.html' %}
+                <div class="mb-3 profile-picture-controls">
+                    <label class="form-label-custom d-block">{{ p_form.profile_picture.label }}</label>
+                    {# Django'нун ClearableFileInput виджетинин өзүнүн HTML'ин чыгарабыз #}
+                    {# Бирок, биз аны кастомдоштургандыктан, бул жерде кылдат болуу керек #}
+                    {# Азырынча жөнөкөй калтыралы, эгер сүрөт бар болсо, тазалоо чекбоксун көрсөтөбүз #}
+                    {% if profile.profile_picture and profile.profile_picture.url %}
+                        <div class="current-image-text">
+                            Учурдагы сүрөт: <a href="{{ profile.profile_picture.url }}" target="_blank">{{ profile.profile_picture.name|slice:"profile_pictures/" }}</a>
+                        </div>
+                        <div class="form-check mt-1">
+                             <input type="checkbox" name="{{ p_form.profile_picture.clear_checkbox_name }}" id="{{ p_form.profile_picture.clear_checkbox_id }}" class="form-check-input">
+                             <label for="{{ p_form.profile_picture.clear_checkbox_id }}" class="form-check-label">Сүрөттү өчүрүү</label>
+                        </div>
+                    {% else %}
+                        <small class="form-text text-muted">Сүрөт жүктөлө элек.</small>
+                    {% endif %}
+                    {% for error in p_form.profile_picture.errors %}<div class="form-field-error d-block mt-1">{{ error }}</div>{% endfor %}
+                </div>
+            {% else %}
+                {# Эгер башка виджет болсо (сейрек) #}
+                <p>{{ p_form.profile_picture }}</p>
+            {% endif %}
+
+
+            <div class="mt-4">
+                <button class="btn btn-save-profile" type="submit">
+                    <i class="fas fa-save me-2"></i>Сактоо
+                </button>
+            </div>
+        </form>
+
+        <div class="profile-actions-bottom">
+             <a href="{% url 'learning_hub:home' %}" class="btn btn-link btn-link-custom text-secondary"><i class="fas fa-arrow-left me-1"></i>Артка</a>
+             <a href="{% url 'users:logout' %}" class="btn btn-link text-danger btn-link-custom"><i class="fas fa-sign-out-alt me-1"></i>Чыгуу</a>
+        </div>
+    </div>
+</div>
+{% endblock content_full_width %}
+
+{% block extra_scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Сүрөт тандалганда аны башкы аватарда көрсөтүү
+    const avatarFileInput = document.getElementById('id_profile_picture'); // Django'нун демейки ID'си
+    const avatarPreviewImage = document.getElementById('avatarPreviewImage');
+    
+    if (avatarFileInput && avatarPreviewImage) {
+        avatarFileInput.addEventListener('change', function(event) {
+            if (event.target.files && event.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    avatarPreviewImage.src = e.target.result;
+                }
+                reader.readAsDataURL(event.target.files[0]);
+            }
+        });
+    }
+    
+    // Туулган күн талаасын 'date' тибине өзгөртүү
+    const dateInput = document.getElementById('{{ p_form.date_of_birth.id_for_label }}');
+    if (dateInput && dateInput.tagName === 'INPUT' && dateInput.type !== 'date') {
+        dateInput.type = 'date';
+    }
+
+    // Username талаасын өзгөртүлбөс кылуу үчүн (эгер UserUpdateForm'дон username'ди алып салбасак)
+    const usernameInput = document.getElementById('{{ u_form.username.id_for_label }}');
+    if (usernameInput) {
+        // usernameInput.readOnly = true; // Өзгөртүүгө болбойт
+        // usernameInput.disabled = true; // Форма менен кошо жөнөтүлбөйт
+        // Жогоруда HTML'ге readonly disabled коштук, бул жакшыраак
+    }
+});
+</script>
+{% endblock extra_scripts %}
