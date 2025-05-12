@@ -95,19 +95,13 @@ mediafiles/        # User-uploaded media (ignored in version control)
 
 ✨ Showcase (or Screenshots)
 
-Here's a sneak peek of what TechPerson looks like:
+![TechPerson](https://github.com/user-attachments/assets/494c3da4-5a4e-4a98-885a-35c8560c6d02)
+
 
 <p align="center">
-  <img src="readme_assets/screenshot_homepage.png" alt="TechPerson Homepage Screenshot" width="700">
-  <em>Homepage of the TechPerson Platform</em>
+  <img src="https://github.com/your-username/your-repo/assets/your-upload-id" alt="Grocery Store Homepage" width="600">
 </p>
 
-<br>
-
-<p align="center">
-  <img src="readme_assets/screenshot_courses.png" alt="TechPerson Courses Page Screenshot" width="700">
-  <em>Course Listing Page</em>
-</p>
 
 ## 👩‍💻 Author
 
